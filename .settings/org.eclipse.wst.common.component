@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="ecommerce_occhiali">
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <property name="context-root" value="ecommerce_occhiali"/>
+        <property name="java-output-path" value="/ecommerce_occhiali/build/classes"/>
+    </wb-module>
+</project-modules>
