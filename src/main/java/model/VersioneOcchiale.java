@@ -8,9 +8,9 @@ public class VersioneOcchiale implements Cloneable{
     private String materiale;
     private double prezzo;
     private boolean corrente;
-    private int occhialeId;
+    private Occhiale occhiale;
 
-    public VersioneOcchiale(int codVersione, Genere genere, String taglia, String montatura, String forma, String materiale, double prezzo, int occhialeId) {
+    public VersioneOcchiale(int codVersione, Genere genere, String taglia, String montatura, String forma, String materiale, double prezzo, Occhiale occhiale) {
         this.codVersione = codVersione;
         this.genere = genere;
         this.taglia = taglia;
@@ -19,7 +19,7 @@ public class VersioneOcchiale implements Cloneable{
         this.materiale = materiale;
         this.prezzo = prezzo;
         this.corrente = true;
-        this.occhialeId = occhialeId;
+        this.occhiale = occhiale.clone();
     }
 
     public VersioneOcchiale() {
@@ -57,8 +57,8 @@ public class VersioneOcchiale implements Cloneable{
         this.materiale = materiale;
     }
 
-    public void setOcchialeId(int occhialeId) {
-        this.occhialeId = occhialeId;
+    public void setOcchiale(Occhiale occhiale) {
+        this.occhiale = occhiale.clone();
     }
 
     public Genere getGenere() {
@@ -93,14 +93,18 @@ public class VersioneOcchiale implements Cloneable{
         return corrente;
     }
 
-    public int getOcchialeId() {
-        return occhialeId;
+    public Occhiale getOcchiale() {
+        return occhiale.clone();
     }
 
     @Override
     public VersioneOcchiale clone(){
         try{
-            return (VersioneOcchiale) super.clone();
+            VersioneOcchiale cloned = (VersioneOcchiale) super.clone();
+            if(occhiale!=null)	cloned.occhiale=occhiale.clone();
+            else	cloned.occhiale=null;
+            
+            return cloned;
         } catch (CloneNotSupportedException e) {
             return null;
         }
@@ -117,7 +121,7 @@ public class VersioneOcchiale implements Cloneable{
                 ", materiale='" + materiale +
                 ", prezzo=" + prezzo +
                 ", corrente=" + corrente +
-                ", occhialeId=" + occhialeId +
+                ", occhiale=" + occhiale +
                 ']';
     }
 }
