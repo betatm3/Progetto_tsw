@@ -23,12 +23,12 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
 
     @Override
     public void doSave(VersioneOcchiale versione) throws SQLException {
-        String insertSQL = "INSERT INTO " + TABLE_NAME + " (cod_versione, genere, taglia, montatura, forma, materiale, prezzo, corrente, id_occhiale) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO " + TABLE_NAME + " (codice, genere, taglia, montatura, forma, materiale, prezzo, corrente, occhiale_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
             
-            preparedStatement.setInt(1, versione.getCodVersione());
+            preparedStatement.setInt(1, versione.getCodice());
             preparedStatement.setString(2, versione.getGenere() != null ? versione.getGenere().name() : null);
             preparedStatement.setString(3, versione.getTaglia());
             preparedStatement.setString(4, versione.getMontatura());
@@ -44,7 +44,7 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
 
     @Override
     public void doUpdate(VersioneOcchiale versione) throws SQLException {
-        String updateSQL = "UPDATE " + TABLE_NAME + " SET genere = ?, taglia = ?, montatura = ?, forma = ?, materiale = ?, prezzo = ?, corrente = ?, id_occhiale = ? WHERE cod_versione = ?";
+        String updateSQL = "UPDATE " + TABLE_NAME + " SET genere = ?, taglia = ?, montatura = ?, forma = ?, materiale = ?, prezzo = ?, corrente = ?, occhiale_id = ? WHERE codice = ?";
 
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
@@ -57,57 +57,39 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
             preparedStatement.setDouble(6, versione.getPrezzo());
             preparedStatement.setBoolean(7, versione.isCorrente());
             preparedStatement.setInt(8, versione.getOcchiale() != null ? versione.getOcchiale().getId() : 0);
-            preparedStatement.setInt(9, versione.getCodVersione());
+            preparedStatement.setInt(9, versione.getCodice());
 
             preparedStatement.executeUpdate();
         }
     }
 
     @Override
-    public boolean doDelete(int codVersione) throws SQLException {
-        String deleteSQL = "DELETE FROM " + TABLE_NAME + " WHERE cod_versione = ?";
+    public boolean doDelete(int codice) throws SQLException {
+        String deleteSQL = "DELETE FROM " + TABLE_NAME + " WHERE codice = ?";
         int result = 0;
 
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(deleteSQL)) {
             
-            preparedStatement.setInt(1, codVersione);
+            preparedStatement.setInt(1, codice);
             result = preparedStatement.executeUpdate();
         }
         return (result != 0);
     }
 
     @Override
-    public VersioneOcchiale doRetrieveByKey(int codVersione) throws SQLException {
-        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE cod_versione = ?";
+    public VersioneOcchiale doRetrieveByKey(int codice) throws SQLException {
+        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE codice = ?";
         VersioneOcchiale versione = null;
 
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
             
-            preparedStatement.setInt(1, codVersione);
+            preparedStatement.setInt(1, codice);
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
-                    versione = new VersioneOcchiale();
-                    versione.setCodVersione(rs.getInt("cod_versione"));
-                    
-                    String genereStr = rs.getString("genere");
-                    if (genereStr != null) versione.setGenere(Genere.valueOf(genereStr));
-                    
-                    versione.setTaglia(rs.getString("taglia"));
-                    versione.setMontatura(rs.getString("montatura"));
-                    versione.setForma(rs.getString("forma"));
-                    versione.setMateriale(rs.getString("materiale"));
-                    versione.setPrezzo(rs.getDouble("prezzo"));
-                    versione.setCorrente(rs.getBoolean("corrente"));
-                    
-                    int idOcchiale = rs.getInt("id_occhiale");
-                    if (idOcchiale != 0) {
-                        Occhiale o = new Occhiale();
-                        o.setId(idOcchiale);
-                        versione.setOcchiale(o);
-                    }
+                    versione = leggiDBVersioneOcchiale(rs);
                 }
             }
         }
@@ -116,7 +98,7 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
 
     @Override
     public Collection<VersioneOcchiale> doRetrieveByOcchiale(Occhiale occhiale) throws SQLException {
-        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE id_occhiale = ?";
+        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE occhiale_id = ?";
         Collection<VersioneOcchiale> lista = new ArrayList<>();
 
         try (Connection connection = ds.getConnection();
@@ -126,24 +108,7 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
-                    VersioneOcchiale v = new VersioneOcchiale();
-                    v.setCodVersione(rs.getInt("cod_versione"));
-                    String genereStr = rs.getString("genere");
-                    if (genereStr != null) v.setGenere(Genere.valueOf(genereStr));
-                    v.setTaglia(rs.getString("taglia"));
-                    v.setMontatura(rs.getString("montatura"));
-                    v.setForma(rs.getString("forma"));
-                    v.setMateriale(rs.getString("materiale"));
-                    v.setPrezzo(rs.getDouble("prezzo"));
-                    v.setCorrente(rs.getBoolean("corrente"));
-                    
-                    int idOcchiale = rs.getInt("id_occhiale");
-                    if (idOcchiale != 0) {
-                        Occhiale o = new Occhiale();
-                        o.setId(idOcchiale);
-                        v.setOcchiale(o);
-                    }
-                    lista.add(v);
+                    lista.add(leggiDBVersioneOcchiale(rs));
                 }
             }
         }
@@ -162,24 +127,7 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
-                    VersioneOcchiale v = new VersioneOcchiale();
-                    v.setCodVersione(rs.getInt("cod_versione"));
-                    String genereStr = rs.getString("genere");
-                    if (genereStr != null) v.setGenere(Genere.valueOf(genereStr));
-                    v.setTaglia(rs.getString("taglia"));
-                    v.setMontatura(rs.getString("montatura"));
-                    v.setForma(rs.getString("forma"));
-                    v.setMateriale(rs.getString("materiale"));
-                    v.setPrezzo(rs.getDouble("prezzo"));
-                    v.setCorrente(rs.getBoolean("corrente"));
-                    
-                    int idOcchiale = rs.getInt("id_occhiale");
-                    if (idOcchiale != 0) {
-                        Occhiale o = new Occhiale();
-                        o.setId(idOcchiale);
-                        v.setOcchiale(o);
-                    }
-                    lista.add(v);
+                    lista.add(leggiDBVersioneOcchiale(rs));
                 }
             }
         }
@@ -198,24 +146,7 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
-                    VersioneOcchiale v = new VersioneOcchiale();
-                    v.setCodVersione(rs.getInt("cod_versione"));
-                    String genereStr = rs.getString("genere");
-                    if (genereStr != null) v.setGenere(Genere.valueOf(genereStr));
-                    v.setTaglia(rs.getString("taglia"));
-                    v.setMontatura(rs.getString("montatura"));
-                    v.setForma(rs.getString("forma"));
-                    v.setMateriale(rs.getString("materiale"));
-                    v.setPrezzo(rs.getDouble("prezzo"));
-                    v.setCorrente(rs.getBoolean("corrente"));
-                    
-                    int idOcchiale = rs.getInt("id_occhiale");
-                    if (idOcchiale != 0) {
-                        Occhiale o = new Occhiale();
-                        o.setId(idOcchiale);
-                        v.setOcchiale(o);
-                    }
-                    lista.add(v);
+                    lista.add(leggiDBVersioneOcchiale(rs));
                 }
             }
         }
@@ -234,24 +165,7 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
-                    VersioneOcchiale v = new VersioneOcchiale();
-                    v.setCodVersione(rs.getInt("cod_versione"));
-                    String genereStr = rs.getString("genere");
-                    if (genereStr != null) v.setGenere(Genere.valueOf(genereStr));
-                    v.setTaglia(rs.getString("taglia"));
-                    v.setMontatura(rs.getString("montatura"));
-                    v.setForma(rs.getString("forma"));
-                    v.setMateriale(rs.getString("materiale"));
-                    v.setPrezzo(rs.getDouble("prezzo"));
-                    v.setCorrente(rs.getBoolean("corrente"));
-                    
-                    int idOcchiale = rs.getInt("id_occhiale");
-                    if (idOcchiale != 0) {
-                        Occhiale o = new Occhiale();
-                        o.setId(idOcchiale);
-                        v.setOcchiale(o);
-                    }
-                    lista.add(v);
+                    lista.add(leggiDBVersioneOcchiale(rs));
                 }
             }
         }
@@ -270,24 +184,7 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
-                    VersioneOcchiale v = new VersioneOcchiale();
-                    v.setCodVersione(rs.getInt("cod_versione"));
-                    String genereStr = rs.getString("genere");
-                    if (genereStr != null) v.setGenere(Genere.valueOf(genereStr));
-                    v.setTaglia(rs.getString("taglia"));
-                    v.setMontatura(rs.getString("montatura"));
-                    v.setForma(rs.getString("forma"));
-                    v.setMateriale(rs.getString("materiale"));
-                    v.setPrezzo(rs.getDouble("prezzo"));
-                    v.setCorrente(rs.getBoolean("corrente"));
-                    
-                    int idOcchiale = rs.getInt("id_occhiale");
-                    if (idOcchiale != 0) {
-                        Occhiale o = new Occhiale();
-                        o.setId(idOcchiale);
-                        v.setOcchiale(o);
-                    }
-                    lista.add(v);
+                    lista.add(leggiDBVersioneOcchiale(rs));
                 }
             }
         }
@@ -306,24 +203,7 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
-                    VersioneOcchiale v = new VersioneOcchiale();
-                    v.setCodVersione(rs.getInt("cod_versione"));
-                    String genereStr = rs.getString("genere");
-                    if (genereStr != null) v.setGenere(Genere.valueOf(genereStr));
-                    v.setTaglia(rs.getString("taglia"));
-                    v.setMontatura(rs.getString("montatura"));
-                    v.setForma(rs.getString("forma"));
-                    v.setMateriale(rs.getString("materiale"));
-                    v.setPrezzo(rs.getDouble("prezzo"));
-                    v.setCorrente(rs.getBoolean("corrente"));
-                    
-                    int idOcchiale = rs.getInt("id_occhiale");
-                    if (idOcchiale != 0) {
-                        Occhiale o = new Occhiale();
-                        o.setId(idOcchiale);
-                        v.setOcchiale(o);
-                    }
-                    lista.add(v);
+                    lista.add(leggiDBVersioneOcchiale(rs));
                 }
             }
         }
@@ -342,24 +222,7 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
-                    VersioneOcchiale v = new VersioneOcchiale();
-                    v.setCodVersione(rs.getInt("cod_versione"));
-                    String genereStr = rs.getString("genere");
-                    if (genereStr != null) v.setGenere(Genere.valueOf(genereStr));
-                    v.setTaglia(rs.getString("taglia"));
-                    v.setMontatura(rs.getString("montatura"));
-                    v.setForma(rs.getString("forma"));
-                    v.setMateriale(rs.getString("materiale"));
-                    v.setPrezzo(rs.getDouble("prezzo"));
-                    v.setCorrente(rs.getBoolean("corrente"));
-                    
-                    int idOcchiale = rs.getInt("id_occhiale");
-                    if (idOcchiale != 0) {
-                        Occhiale o = new Occhiale();
-                        o.setId(idOcchiale);
-                        v.setOcchiale(o);
-                    }
-                    lista.add(v);
+                    lista.add(leggiDBVersioneOcchiale(rs));
                 }
             }
         }
@@ -379,24 +242,7 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
-                    VersioneOcchiale v = new VersioneOcchiale();
-                    v.setCodVersione(rs.getInt("cod_versione"));
-                    String genereStr = rs.getString("genere");
-                    if (genereStr != null) v.setGenere(Genere.valueOf(genereStr));
-                    v.setTaglia(rs.getString("taglia"));
-                    v.setMontatura(rs.getString("montatura"));
-                    v.setForma(rs.getString("forma"));
-                    v.setMateriale(rs.getString("materiale"));
-                    v.setPrezzo(rs.getDouble("prezzo"));
-                    v.setCorrente(rs.getBoolean("corrente"));
-                    
-                    int idOcchiale = rs.getInt("id_occhiale");
-                    if (idOcchiale != 0) {
-                        Occhiale o = new Occhiale();
-                        o.setId(idOcchiale);
-                        v.setOcchiale(o);
-                    }
-                    lista.add(v);
+                    lista.add(leggiDBVersioneOcchiale(rs));
                 }
             }
         }
@@ -415,24 +261,7 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
-                    VersioneOcchiale v = new VersioneOcchiale();
-                    v.setCodVersione(rs.getInt("cod_versione"));
-                    String genereStr = rs.getString("genere");
-                    if (genereStr != null) v.setGenere(Genere.valueOf(genereStr));
-                    v.setTaglia(rs.getString("taglia"));
-                    v.setMontatura(rs.getString("montatura"));
-                    v.setForma(rs.getString("forma"));
-                    v.setMateriale(rs.getString("materiale"));
-                    v.setPrezzo(rs.getDouble("prezzo"));
-                    v.setCorrente(rs.getBoolean("corrente"));
-                    
-                    int idOcchiale = rs.getInt("id_occhiale");
-                    if (idOcchiale != 0) {
-                        Occhiale o = new Occhiale();
-                        o.setId(idOcchiale);
-                        v.setOcchiale(o);
-                    }
-                    lista.add(v);
+                    lista.add(leggiDBVersioneOcchiale(rs));
                 }
             }
         }
@@ -454,26 +283,35 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
              ResultSet rs = preparedStatement.executeQuery()) {
 
             while (rs.next()) {
-                VersioneOcchiale v = new VersioneOcchiale();
-                v.setCodVersione(rs.getInt("cod_versione"));
-                String genereStr = rs.getString("genere");
-                if (genereStr != null) v.setGenere(Genere.valueOf(genereStr));
-                v.setTaglia(rs.getString("taglia"));
-                v.setMontatura(rs.getString("montatura"));
-                v.setForma(rs.getString("forma"));
-                v.setMateriale(rs.getString("materiale"));
-                v.setPrezzo(rs.getDouble("prezzo"));
-                v.setCorrente(rs.getBoolean("corrente"));
-                
-                int idOcchiale = rs.getInt("id_occhiale");
-                if (idOcchiale != 0) {
-                    Occhiale o = new Occhiale();
-                    o.setId(idOcchiale);
-                    v.setOcchiale(o);
-                }
-                lista.add(v);
+                lista.add(leggiDBVersioneOcchiale(rs));
             }
         }
         return lista;
+    }
+
+    private VersioneOcchiale leggiDBVersioneOcchiale(ResultSet rs) throws SQLException {
+        VersioneOcchiale v = new VersioneOcchiale();
+        v.setCodice(rs.getInt("codice"));
+        
+        String genereStr = rs.getString("genere");
+        if (genereStr != null) {
+            v.setGenere(Genere.valueOf(genereStr));
+        }
+        
+        v.setTaglia(rs.getString("taglia"));
+        v.setMontatura(rs.getString("montatura"));
+        v.setForma(rs.getString("forma"));
+        v.setMateriale(rs.getString("materiale"));
+        v.setPrezzo(rs.getDouble("prezzo"));
+        v.setCorrente(rs.getBoolean("corrente"));
+        
+        int idOcchiale = rs.getInt("occhiale_id");
+        if (idOcchiale != 0) {
+            Occhiale o = new Occhiale();
+            o.setId(idOcchiale);
+            v.setOcchiale(o);
+        }
+        
+        return v;
     }
 }

@@ -24,7 +24,7 @@ public class OrdineDAOImpl implements OrdineDAO {
     @Override
     public void doSave(Ordine ordine) throws SQLException {
         
-        String insertSQL = "INSERT INTO " + TABLE_NAME + " (id, metodo_pagamento, data_ordine, stato, totale, utente_id) VALUES (?, ?, ?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO " + TABLE_NAME + " (id, metodo_pagamento, data_ordine, stato, totale, utente_email) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
@@ -45,7 +45,7 @@ public class OrdineDAOImpl implements OrdineDAO {
 
     @Override
     public void doUpdate(Ordine ordine) throws SQLException {
-        String updateSQL = "UPDATE " + TABLE_NAME + " SET metodo_pagamento = ?, data_ordine = ?, stato = ?, totale = ?, utente_id = ? WHERE id = ?";
+        String updateSQL = "UPDATE " + TABLE_NAME + " SET metodo_pagamento = ?, data_ordine = ?, stato = ?, totale = ?, utente_email = ? WHERE id = ?";
 
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
@@ -87,7 +87,7 @@ public class OrdineDAOImpl implements OrdineDAO {
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
-                    ordine = mapResultSetToOrdine(rs);
+                    ordine = leggiDBOrdine(rs);
                 }
             }
         }
@@ -96,7 +96,7 @@ public class OrdineDAOImpl implements OrdineDAO {
 
     @Override
     public Collection<Ordine> doRetrieveByUtente(Utente utente) throws SQLException {
-        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE utente_id = ?";
+        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE utente_email = ?";
         Collection<Ordine> ordini = new ArrayList<>();
 
         try (Connection connection = ds.getConnection();
@@ -106,7 +106,7 @@ public class OrdineDAOImpl implements OrdineDAO {
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
-                    ordini.add(mapResultSetToOrdine(rs));
+                    ordini.add(leggiDBOrdine(rs));
                 }
             }
         }
@@ -125,7 +125,7 @@ public class OrdineDAOImpl implements OrdineDAO {
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
-                    ordini.add(mapResultSetToOrdine(rs));
+                    ordini.add(leggiDBOrdine(rs));
                 }
             }
         }
@@ -147,14 +147,14 @@ public class OrdineDAOImpl implements OrdineDAO {
              ResultSet rs = preparedStatement.executeQuery()) {
 
             while (rs.next()) {
-                ordini.add(mapResultSetToOrdine(rs));
+                ordini.add(leggiDBOrdine(rs));
             }
         }
         return ordini;
     }
 
   
-    private Ordine mapResultSetToOrdine(ResultSet rs) throws SQLException {
+    private Ordine leggiDBOrdine(ResultSet rs) throws SQLException {
         Ordine ordine = new Ordine();
         ordine.setId(rs.getInt("id"));
         ordine.setMetodoPagamento(rs.getString("metodo_pagamento"));
@@ -172,10 +172,10 @@ public class OrdineDAOImpl implements OrdineDAO {
         
         ordine.setTotale(rs.getDouble("totale"));
         
-        String utenteId = rs.getString("utente_id");
-        if (utenteId != null) {
+        String utente_email = rs.getString("utente_email");
+        if (utente_email != null) {
             Utente u = new Utente();
-            u.setEmail(utenteId); 
+            u.setEmail(utente_email); 
             ordine.setUtente(u);
         }
         

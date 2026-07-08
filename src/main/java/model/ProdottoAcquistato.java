@@ -97,7 +97,7 @@ public class ProdottoAcquistato implements Cloneable{
                 ", ordine=" + ordine +
                 ", quantita=" + quantita +
                 ", colore=" + colore +
-                ", versioneCodice=" + versioneOcchiale +
+                ", versioneOcchiale=" + versioneOcchiale +
                 ", occhiale=" + occhiale +
                 ']';
     }

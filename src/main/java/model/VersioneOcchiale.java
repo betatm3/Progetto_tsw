@@ -1,6 +1,6 @@
 package model;
 public class VersioneOcchiale implements Cloneable{
-    private int codVersione;
+    private int codice;
     private Genere genere;
     private String taglia;
     private String montatura;
@@ -10,8 +10,8 @@ public class VersioneOcchiale implements Cloneable{
     private boolean corrente;
     private Occhiale occhiale;
 
-    public VersioneOcchiale(int codVersione, Genere genere, String taglia, String montatura, String forma, String materiale, double prezzo, Occhiale occhiale) {
-        this.codVersione = codVersione;
+    public VersioneOcchiale(int codice, Genere genere, String taglia, String montatura, String forma, String materiale, double prezzo, Occhiale occhiale) {
+        this.codice = codice;
         this.genere = genere;
         this.taglia = taglia;
         this.montatura = montatura;
@@ -25,8 +25,8 @@ public class VersioneOcchiale implements Cloneable{
     public VersioneOcchiale() {
     }
 
-    public void setCodVersione(int codVersione) {
-        this.codVersione = codVersione;
+    public void setCodice(int codice) {
+        this.codice = codice;
     }
 
     public void setGenere(Genere genere) {
@@ -65,8 +65,8 @@ public class VersioneOcchiale implements Cloneable{
         return genere;
     }
 
-    public int getCodVersione() {
-        return codVersione;
+    public int getCodice() {
+        return codice;
     }
 
     public String getTaglia() {
@@ -113,12 +113,12 @@ public class VersioneOcchiale implements Cloneable{
     @Override
     public String toString() {
         return getClass().getName()+"[" +
-                "codVersione=" + codVersione +
+                "codice=" + codice +
                 ", genere=" + genere +
-                ", taglia='" + taglia  +
-                ", montatura='" + montatura  +
-                ", forma='" + forma +
-                ", materiale='" + materiale +
+                ", taglia=" + taglia  +
+                ", montatura=" + montatura  +
+                ", forma=" + forma +
+                ", materiale=" + materiale +
                 ", prezzo=" + prezzo +
                 ", corrente=" + corrente +
                 ", occhiale=" + occhiale +

@@ -72,9 +72,7 @@ public class OcchialeDAOImpl implements OcchialeDAO {
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
-                    occhiale = new Occhiale();
-                    occhiale.setId(rs.getInt("id"));
-                    occhiale.setAttivo(rs.getBoolean("attivo"));
+                    occhiale = leggiDBOcchiale(rs);
                 }
             }
         }
@@ -93,10 +91,7 @@ public class OcchialeDAOImpl implements OcchialeDAO {
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
-                    Occhiale occhiale = new Occhiale();
-                    occhiale.setId(rs.getInt("id"));
-                    occhiale.setAttivo(rs.getBoolean("attivo"));
-                    occhiali.add(occhiale);
+                    occhiali.add(leggiDBOcchiale(rs));
                 }
             }
         }
@@ -118,12 +113,16 @@ public class OcchialeDAOImpl implements OcchialeDAO {
              ResultSet rs = preparedStatement.executeQuery()) {
 
             while (rs.next()) {
-                Occhiale occhiale = new Occhiale();
-                occhiale.setId(rs.getInt("id"));
-                occhiale.setAttivo(rs.getBoolean("attivo"));
-                occhiali.add(occhiale);
+                occhiali.add(leggiDBOcchiale(rs));
             }
         }
         return occhiali;
+    }
+
+    private Occhiale leggiDBOcchiale(ResultSet rs) throws SQLException {
+        Occhiale occhiale = new Occhiale();
+        occhiale.setId(rs.getInt("id"));
+        occhiale.setAttivo(rs.getBoolean("attivo"));
+        return occhiale;
     }
 }

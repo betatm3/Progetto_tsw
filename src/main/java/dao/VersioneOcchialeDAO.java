@@ -10,9 +10,9 @@ public interface VersioneOcchialeDAO {
 
     void doUpdate(VersioneOcchiale versione) throws Exception;
 
-    boolean doDelete(int codVersione) throws Exception;
+    boolean doDelete(int codice) throws Exception;
 
-    VersioneOcchiale doRetrieveByKey(int codVersione) throws Exception;
+    VersioneOcchiale doRetrieveByKey(int codice) throws Exception;
 
     Collection<VersioneOcchiale> doRetrieveByOcchiale(Occhiale occhiale) throws Exception;
 
