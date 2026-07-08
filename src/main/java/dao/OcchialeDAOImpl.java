@@ -20,27 +20,29 @@ public class OcchialeDAOImpl implements OcchialeDAO {
 
     @Override
     public void doSave(Occhiale occhiale) throws SQLException {
-        String insertSQL = "INSERT INTO " + TABLE_NAME + " (id, attivo) VALUES (?, ?)";
+        String insertSQL = "INSERT INTO " + TABLE_NAME + " (id, attivo, immagine) VALUES (?, ?, ?)";
 
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
             
             preparedStatement.setInt(1, occhiale.getId());
             preparedStatement.setBoolean(2, occhiale.isAttivo());
-
+            preparedStatement.setBytes(3, occhiale.getImmagine());
+            
             preparedStatement.executeUpdate();
         }
     }
 
     @Override
     public void doUpdate(Occhiale occhiale) throws SQLException {
-        String updateSQL = "UPDATE " + TABLE_NAME + " SET attivo = ? WHERE id = ?";
+        String updateSQL = "UPDATE " + TABLE_NAME + " SET attivo = ?, immagine = ? WHERE id = ?";
 
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
             
             preparedStatement.setBoolean(1, occhiale.isAttivo());
-            preparedStatement.setInt(2, occhiale.getId());
+            preparedStatement.setBytes(2, occhiale.getImmagine());
+            preparedStatement.setInt(3, occhiale.getId());
 
             preparedStatement.executeUpdate();
         }
@@ -123,6 +125,7 @@ public class OcchialeDAOImpl implements OcchialeDAO {
         Occhiale occhiale = new Occhiale();
         occhiale.setId(rs.getInt("id"));
         occhiale.setAttivo(rs.getBoolean("attivo"));
+        occhiale.setImmagine(rs.getBytes("immagine"));
         return occhiale;
     }
 }

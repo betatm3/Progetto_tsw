@@ -3,9 +3,9 @@ package model;
 public class Occhiale implements Cloneable{
 	private int id;
 	private boolean attivo;
-	
-	
-	public Occhiale(int id, boolean attivo) {
+	private byte[] immagine; // <-- NUOVO ATTRIBUTO PER IL BLOB
+
+   	public Occhiale(int id, boolean attivo) {
 		this.id = id;
 		this.attivo = attivo;
 	}
@@ -25,11 +25,24 @@ public class Occhiale implements Cloneable{
 	public void setAttivo(boolean attivo) {
 		this.attivo = attivo;
 	}
+	
+    public byte[] getImmagine() {
+        return immagine != null ? immagine.clone() : null;
+    }
+
+    public void setImmagine(byte[] immagine) {
+        this.immagine = immagine != null ? immagine.clone() : null;
+    }
+    
 
     @Override
     public Occhiale clone(){
-        try{
-            return (Occhiale) super.clone();
+    	try {
+            Occhiale cloned = (Occhiale) super.clone();
+            if (this.immagine != null) {
+                cloned.immagine = this.immagine.clone();
+            }
+             return cloned;
         } catch (CloneNotSupportedException e) {
             return null;
         }
