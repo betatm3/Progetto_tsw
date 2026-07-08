@@ -1,0 +1,129 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.ArrayList;
+import javax.sql.DataSource;
+import model.Occhiale;
+
+public class OcchialeDAOImpl implements OcchialeDAO {
+
+    private DataSource ds;
+    public static final String TABLE_NAME = "occhiale";
+
+    public OcchialeDAOImpl(DataSource ds) {
+        this.ds = ds;
+    }
+
+    @Override
+    public void doSave(Occhiale occhiale) throws SQLException {
+        String insertSQL = "INSERT INTO " + TABLE_NAME + " (id, attivo) VALUES (?, ?)";
+
+        try (Connection connection = ds.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+            
+            preparedStatement.setInt(1, occhiale.getId());
+            preparedStatement.setBoolean(2, occhiale.isAttivo());
+
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    @Override
+    public void doUpdate(Occhiale occhiale) throws SQLException {
+        String updateSQL = "UPDATE " + TABLE_NAME + " SET attivo = ? WHERE id = ?";
+
+        try (Connection connection = ds.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
+            
+            preparedStatement.setBoolean(1, occhiale.isAttivo());
+            preparedStatement.setInt(2, occhiale.getId());
+
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    @Override
+    public boolean doDelete(int id) throws SQLException {
+        String deleteSQL = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
+        int result = 0;
+
+        try (Connection connection = ds.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(deleteSQL)) {
+            
+            preparedStatement.setInt(1, id);
+            result = preparedStatement.executeUpdate();
+        }
+        return (result != 0);
+    }
+
+    @Override
+    public Occhiale doRetrieveByKey(int id) throws SQLException {
+        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
+        Occhiale occhiale = null;
+
+        try (Connection connection = ds.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
+            
+            preparedStatement.setInt(1, id);
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    occhiale = new Occhiale();
+                    occhiale.setId(rs.getInt("id"));
+                    occhiale.setAttivo(rs.getBoolean("attivo"));
+                }
+            }
+        }
+        return occhiale;
+    }
+
+    @Override
+    public Collection<Occhiale> doRetrieveByAttivo(boolean attivoScelto) throws SQLException {
+        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE attivo = ?";
+        Collection<Occhiale> occhiali = new ArrayList<>();
+
+        try (Connection connection = ds.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
+            
+            preparedStatement.setBoolean(1, attivoScelto);
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    Occhiale occhiale = new Occhiale();
+                    occhiale.setId(rs.getInt("id"));
+                    occhiale.setAttivo(rs.getBoolean("attivo"));
+                    occhiali.add(occhiale);
+                }
+            }
+        }
+        return occhiali;
+    }
+
+    @Override
+    public Collection<Occhiale> doRetrieveAll(String order) throws SQLException {
+        String selectSQL = "SELECT * FROM " + TABLE_NAME;
+
+        if (order != null && !order.trim().isEmpty()) {
+            selectSQL += " ORDER BY " + order;
+        }
+
+        Collection<Occhiale> occhiali = new ArrayList<>();
+
+        try (Connection connection = ds.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+             ResultSet rs = preparedStatement.executeQuery()) {
+
+            while (rs.next()) {
+                Occhiale occhiale = new Occhiale();
+                occhiale.setId(rs.getInt("id"));
+                occhiale.setAttivo(rs.getBoolean("attivo"));
+                occhiali.add(occhiale);
+            }
+        }
+        return occhiali;
+    }
+}
