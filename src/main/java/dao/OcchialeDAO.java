@@ -9,7 +9,7 @@ public interface OcchialeDAO {
 
 	void doUpdate(Occhiale occhiale) throws SQLException;
 
-    boolean doDelete(int id) throws Exception;
+    boolean doDelete(int id) throws SQLException;
 
     Occhiale doRetrieveByKey(int id) throws SQLException;
 

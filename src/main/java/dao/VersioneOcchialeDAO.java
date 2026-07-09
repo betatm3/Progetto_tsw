@@ -33,5 +33,7 @@ public interface VersioneOcchialeDAO {
     Collection<VersioneOcchiale> doRetrieveByCorrente(boolean corrente) throws SQLException;
 
     Collection<VersioneOcchiale> doRetrieveAll(String order) throws SQLException;
+    
+    VersioneOcchiale doRetrieveCorrenteByOcchiale(int idOcchiale) throws SQLException;
 
 }

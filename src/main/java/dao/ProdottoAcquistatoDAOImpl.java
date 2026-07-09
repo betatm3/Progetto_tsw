@@ -25,7 +25,7 @@ public class ProdottoAcquistatoDAOImpl implements ProdottoAcquistatoDAO {
 
     @Override
     public void doSave(ProdottoAcquistato prodotto) throws SQLException {
-        String insertSQL = "INSERT INTO " + TABLE_NAME + " (numero, id_ordine, quantita, codice_colore, id_versione_occhiale, id_occhiale) VALUES (?, ?, ?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO " + TABLE_NAME + " (numero, ordine_id, quantita, colore_codice, versione_codice, occhiale_id) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
@@ -44,7 +44,7 @@ public class ProdottoAcquistatoDAOImpl implements ProdottoAcquistatoDAO {
 
     @Override
     public void doUpdate(ProdottoAcquistato prodotto) throws SQLException {
-        String updateSQL = "UPDATE " + TABLE_NAME + " SET id_ordine = ?, quantita = ?, codice_colore = ?, id_versione_occhiale = ?, id_occhiale = ? WHERE numero = ?";
+        String updateSQL = "UPDATE " + TABLE_NAME + " SET ordine_id = ?, quantita = ?, colore_codice = ?, versione_codice = ?, occhiale_id = ? WHERE numero = ?";
 
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
@@ -95,7 +95,7 @@ public class ProdottoAcquistatoDAOImpl implements ProdottoAcquistatoDAO {
 
     @Override
     public Collection<ProdottoAcquistato> doRetrieveByOrdine(int id_ordine) throws SQLException {
-        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE id_ordine = ?";
+        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE ordine_id = ?";
         Collection<ProdottoAcquistato> lista = new ArrayList<>();
 
         try (Connection connection = ds.getConnection();

@@ -22,7 +22,7 @@ public class DisponibileDAOImpl implements DisponibileDAO {
 
     @Override
     public void doSave(Disponibile disponibile) throws SQLException {
-        String insertSQL = "INSERT INTO " + TABLE_NAME + " (id_occhiale, codice_colore, quantita) VALUES (?, ?, ?)";
+        String insertSQL = "INSERT INTO " + TABLE_NAME + " (occhiale_id, colore_codice, quantita) VALUES (?, ?, ?)";
 
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
@@ -37,7 +37,7 @@ public class DisponibileDAOImpl implements DisponibileDAO {
 
     @Override
     public void doUpdate(Disponibile disponibile) throws SQLException {
-        String updateSQL = "UPDATE " + TABLE_NAME + " SET quantita = ? WHERE id_occhiale = ? AND codice_colore = ?";
+        String updateSQL = "UPDATE " + TABLE_NAME + " SET quantita = ? WHERE occhiale_id = ? AND colore_codice = ?";
 
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
@@ -52,7 +52,7 @@ public class DisponibileDAOImpl implements DisponibileDAO {
 
     @Override
     public boolean doDelete(int idOcchiale, String codiceColore) throws SQLException {
-        String deleteSQL = "DELETE FROM " + TABLE_NAME + " WHERE id_occhiale = ? AND codice_colore = ?";
+        String deleteSQL = "DELETE FROM " + TABLE_NAME + " WHERE occhiale_id = ? AND colore_codice = ?";
         int result = 0;
 
         try (Connection connection = ds.getConnection();
@@ -67,7 +67,7 @@ public class DisponibileDAOImpl implements DisponibileDAO {
 
     @Override
     public Disponibile doRetrieveByKey(int idOcchiale, String codiceColore) throws SQLException {
-        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE id_occhiale = ? AND codice_colore = ?";
+        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE occhiale_id = ? AND colore_codice = ?";
         Disponibile disponibile = null;
 
         try (Connection connection = ds.getConnection();
@@ -87,7 +87,7 @@ public class DisponibileDAOImpl implements DisponibileDAO {
 
     @Override
     public Collection<Disponibile> doRetrieveByOcchiale(int idOcchiale) throws SQLException {
-        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE id_occhiale = ?";
+        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE occhiale_id = ?";
         Collection<Disponibile> lista = new ArrayList<>();
 
         try (Connection connection = ds.getConnection();
@@ -106,7 +106,7 @@ public class DisponibileDAOImpl implements DisponibileDAO {
     
     @Override
     public Collection<Disponibile> doRetrieveByColore(String codiceColore) throws SQLException {
-        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE codice_colore = ?";
+        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE colore_codice = ?";
         Collection<Disponibile> lista = new ArrayList<>();
 
         try (Connection connection = ds.getConnection();
@@ -149,11 +149,11 @@ public class DisponibileDAOImpl implements DisponibileDAO {
         disponibile.setQuantita(rs.getInt("quantita"));
         
         Occhiale occ = new Occhiale();
-        occ.setId(rs.getInt("id_occhiale"));
+        occ.setId(rs.getInt("occhiale_id"));
         disponibile.setOcchiale(occ);
         
         Colore col = new Colore();
-        col.setCodice(rs.getString("codice_colore"));
+        col.setCodice(rs.getString("colore_codice"));
         disponibile.setColore(col);
         
         return disponibile;
