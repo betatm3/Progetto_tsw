@@ -288,6 +288,25 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
         }
         return lista;
     }
+    
+    @Override
+    public VersioneOcchiale doRetrieveCorrenteByOcchiale(int idOcchiale) throws SQLException {
+        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE occhiale_id = ? AND corrente = TRUE";
+        VersioneOcchiale versione = null;
+
+        try (Connection connection = ds.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
+
+            preparedStatement.setInt(1, idOcchiale);
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    versione = leggiDBVersioneOcchiale(rs);
+                }
+            }
+        }
+        return versione; 
+    }
 
     private VersioneOcchiale leggiDBVersioneOcchiale(ResultSet rs) throws SQLException {
         VersioneOcchiale v = new VersioneOcchiale();
@@ -315,25 +334,6 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
         return v;
     }
 
-    @Override
-    public VersioneOcchiale doRetrieveCorrenteByOcchiale(int idOcchiale) throws SQLException {
-        // Usiamo 'occhiale_id' per essere coerenti con l'helper leggiDBVersioneOcchiale
-        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE occhiale_id = ? AND corrente = TRUE";
-        VersioneOcchiale versione = null;
-
-        try (Connection connection = ds.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
-
-            preparedStatement.setInt(1, idOcchiale);
-
-            try (ResultSet rs = preparedStatement.executeQuery()) {
-                if (rs.next()) {
-                    // Utilizziamo la funzione helper per mappare i dati del database nel JavaBean
-                    versione = leggiDBVersioneOcchiale(rs);
-                }
-            }
-        }
-        return versione; // Restituisce l'oggetto estratto, oppure null se non trova nulla
-    }
+    
 
 }

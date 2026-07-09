@@ -1,6 +1,6 @@
 package model;
 
-public class Disponibile {
+public class Disponibile implements Cloneable{
 	private Colore colore;
 	private Occhiale occhiale;
 	private int quantita;
@@ -38,11 +38,27 @@ public class Disponibile {
 		this.quantita = quantita;
 	}
 
+	
+	
+	@Override
+	protected Object clone(){
+		try{
+        	Disponibile cloned = (Disponibile) super.clone();
+        	if(colore!=null)   		cloned.colore = colore.clone();
+        	else	cloned.colore=null;
+        	
+        	if(occhiale!=null)	cloned.occhiale = occhiale.clone();
+        	else	cloned.occhiale = null;
+        	
+        	return cloned;
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
+	}
+
 	@Override
 	public String toString() {
 		return getClass().getName()+"[colore=" + colore + ", occhiale=" + occhiale + ", quantita=" + quantita + "]";
 	}
-	
-	
 
 }

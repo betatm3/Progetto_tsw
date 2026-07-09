@@ -1,15 +1,26 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class Occhiale implements Cloneable{
 	private int id;
 	private boolean attivo;
 	private byte[] immagine; // <-- NUOVO ATTRIBUTO PER IL BLOB
+	private VersioneOcchiale versioneCorrente; 
+	private Collection<Disponibile> disponibilita; 
 
-   	public Occhiale(int id, boolean attivo) {
+	
+   	public Occhiale(int id, boolean attivo, byte[] immagine, VersioneOcchiale versioneCorrente,
+			Collection<Disponibile> disponibilita) {
+		super();
 		this.id = id;
 		this.attivo = attivo;
+		this.immagine = immagine;
+		this.versioneCorrente = versioneCorrente.clone();
+		this.disponibilita = disponibilita;
 	}
-	
+
 	public Occhiale() {
 	}
 	
@@ -35,14 +46,70 @@ public class Occhiale implements Cloneable{
     }
     
 
-    @Override
+    public VersioneOcchiale getVersioneCorrente() {
+		return versioneCorrente.clone();
+	}
+
+	public Collection<Disponibile> getDisponibilita() {
+		if (this.disponibilita == null) {
+	        return null;
+	    }
+	    
+	    Collection<Disponibile> copia = new java.util.ArrayList<>();
+	    for (Disponibile disp : this.disponibilita) {
+	        if (disp != null) {
+	            copia.add((Disponibile) disp.clone());
+	        } else {
+	            copia.add(null);
+	        }
+	    }
+	    return copia;
+	}
+
+	public void setVersioneCorrente(VersioneOcchiale versioneCorrente) {
+		this.versioneCorrente = versioneCorrente.clone();
+	}
+
+	public void setDisponibilita(Collection<Disponibile> disponibilita) {
+			if (disponibilita == null) {
+		        this.disponibilita = null;
+		        return;
+		    }
+		    
+		    Collection<Disponibile> copia = new java.util.ArrayList<>();
+		    for (Disponibile disp : disponibilita) {
+		        if (disp != null) {
+		            copia.add((Disponibile) disp.clone()); 
+		        } else {
+		            copia.add(null);
+		        }
+		    }
+		    this.disponibilita = copia;
+	}
+
+	@Override
     public Occhiale clone(){
     	try {
             Occhiale cloned = (Occhiale) super.clone();
             if (this.immagine != null) {
                 cloned.immagine = this.immagine.clone();
             }
-             return cloned;
+            if (this.versioneCorrente != null) {
+                cloned.versioneCorrente = this.versioneCorrente.clone();
+            }
+            
+            if (this.disponibilita != null) {
+                ArrayList<Disponibile> clonedDisp = new ArrayList<>();
+                for (Disponibile disp : this.disponibilita) {
+                    if (disp != null) {
+                        clonedDisp.add((Disponibile) disp.clone());
+                    } else {
+                        clonedDisp.add(null);
+                    }
+                }
+                cloned.disponibilita = clonedDisp;
+            }
+            return cloned;
         } catch (CloneNotSupportedException e) {
             return null;
         }
@@ -50,7 +117,7 @@ public class Occhiale implements Cloneable{
 
 	@Override
 	public String toString() {
-		return getClass().getName()+" [id=" + id + ", attivo=" + attivo + "]";
+		return getClass().getName()+" [id=" + id + ", attivo=" + attivo + "versioneCorrente= "+versioneCorrente+", disponibilita=" + disponibilita+ "]";
 	}
 	
 }
