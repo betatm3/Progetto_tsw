@@ -6,16 +6,18 @@ import java.util.Collection;
 public class Occhiale implements Cloneable{
 	private int id;
 	private boolean attivo;
+	private Tipologia tipo;
 	private byte[] immagine; // <-- NUOVO ATTRIBUTO PER IL BLOB
 	private VersioneOcchiale versioneCorrente; 
 	private Collection<Disponibile> disponibilita; 
 
 	
-   	public Occhiale(int id, boolean attivo, byte[] immagine, VersioneOcchiale versioneCorrente,
+   	public Occhiale(int id, boolean attivo, Tipologia tipo, byte[] immagine, VersioneOcchiale versioneCorrente,
 			Collection<Disponibile> disponibilita) {
 		super();
 		this.id = id;
 		this.attivo = attivo;
+		this.tipo = tipo;
 		this.immagine = immagine;
 		this.versioneCorrente = versioneCorrente.clone();
 		this.disponibilita = disponibilita;
@@ -44,9 +46,16 @@ public class Occhiale implements Cloneable{
     public void setImmagine(byte[] immagine) {
         this.immagine = immagine != null ? immagine.clone() : null;
     }
-    
 
-    public VersioneOcchiale getVersioneCorrente() {
+    public Tipologia getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Tipologia tipo) {
+		this.tipo = tipo;
+	}
+
+	public VersioneOcchiale getVersioneCorrente() {
 		return versioneCorrente.clone();
 	}
 
@@ -117,7 +126,7 @@ public class Occhiale implements Cloneable{
 
 	@Override
 	public String toString() {
-		return getClass().getName()+" [id=" + id + ", attivo=" + attivo + "versioneCorrente= "+versioneCorrente+", disponibilita=" + disponibilita+ "]";
+		return getClass().getName()+" [id=" + id + ", attivo=" + attivo + ", tipo= "+tipo+ "versioneCorrente= "+versioneCorrente+", disponibilita=" + disponibilita+ "]";
 	}
 	
 }

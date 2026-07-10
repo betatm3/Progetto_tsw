@@ -1,6 +1,8 @@
 package dao;
 import java.util.Collection;
 import model.Occhiale;
+import model.Tipologia;
+
 import java.sql.SQLException;
 
 public interface OcchialeDAO {
@@ -12,6 +14,8 @@ public interface OcchialeDAO {
     boolean doDelete(int id) throws SQLException;
 
     Occhiale doRetrieveByKey(int id) throws SQLException;
+    
+    Collection<Occhiale> doRetrieveByTipologia(Tipologia tipo) throws SQLException;
 
     Collection<Occhiale> doRetrieveByAttivo(boolean attivo) throws SQLException;
 

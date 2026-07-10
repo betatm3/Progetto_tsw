@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.ArrayList;
 import javax.sql.DataSource;
 import model.Occhiale;
+import model.Tipologia;
 
 public class OcchialeDAOImpl implements OcchialeDAO {
 
@@ -79,6 +80,25 @@ public class OcchialeDAOImpl implements OcchialeDAO {
             }
         }
         return occhiale;
+    }
+    
+    @Override
+    public Collection<Occhiale> doRetrieveByTipologia(Tipologia tipo) throws SQLException {
+        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE tipologia = ? AND attivo = TRUE";
+        Collection<Occhiale> lista = new java.util.ArrayList<>();
+
+        try (Connection connection = ds.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
+            
+            preparedStatement.setString(1, tipo != null ? tipo.name() : null);
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                	lista.add(leggiDBOcchiale(rs));     
+                }
+            }
+        }
+        return lista;
     }
 
     @Override
