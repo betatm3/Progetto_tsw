@@ -1,6 +1,8 @@
 package model;
 public class VersioneOcchiale implements Cloneable{
     private int codice;
+    private String marca;
+    private String modello;
     private Genere genere;
     private String taglia;
     private String montatura;
@@ -10,26 +12,38 @@ public class VersioneOcchiale implements Cloneable{
     private boolean corrente;
     private Occhiale occhiale;
 
-    public VersioneOcchiale(int codice, Genere genere, String taglia, String montatura, String forma, String materiale, double prezzo, Occhiale occhiale) {
-        this.codice = codice;
-        this.genere = genere;
-        this.taglia = taglia;
-        this.montatura = montatura;
-        this.forma = forma;
-        this.materiale = materiale;
-        this.prezzo = prezzo;
-        this.corrente = true;
-        this.occhiale = occhiale.clone();
-    }
+    
 
-    public VersioneOcchiale() {
+    public VersioneOcchiale(int codice, String marca, String modello, Genere genere, String taglia, String montatura, String forma, String materiale, double prezzo, boolean corrente, Occhiale occhiale) {
+		this.codice = codice;
+		this.marca = marca;
+		this.modello = modello;
+		this.genere = genere;
+		this.taglia = taglia;
+		this.montatura = montatura;
+		this.forma = forma;
+		this.materiale = materiale;
+		this.prezzo = prezzo;
+		this.corrente = corrente;
+		this.occhiale = occhiale;
+	}
+
+	public VersioneOcchiale() {
     }
 
     public void setCodice(int codice) {
         this.codice = codice;
     }
+    
+    public void setMarca(String marca) {
+		this.marca = marca;
+	}
 
-    public void setGenere(Genere genere) {
+	public void setModello(String modello) {
+		this.modello = modello;
+	}
+
+	public void setGenere(Genere genere) {
         this.genere = genere;
     }
 
@@ -64,6 +78,14 @@ public class VersioneOcchiale implements Cloneable{
     public Genere getGenere() {
         return genere;
     }
+    
+    public String getMarca() {
+		return marca;
+	}
+    
+    public String getModello() {
+		return modello;
+	}
 
     public int getCodice() {
         return codice;
@@ -114,6 +136,8 @@ public class VersioneOcchiale implements Cloneable{
     public String toString() {
         return getClass().getName()+"[" +
                 "codice=" + codice +
+                ", marca=" + marca +
+                ", modello=" + modello +
                 ", genere=" + genere +
                 ", taglia=" + taglia  +
                 ", montatura=" + montatura  +

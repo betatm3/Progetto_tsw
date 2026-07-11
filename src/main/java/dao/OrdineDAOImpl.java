@@ -22,10 +22,10 @@ public class OrdineDAOImpl implements OrdineDAO {
     }
 
     @Override
-    public void doSave(Ordine ordine) throws SQLException {
+    public boolean doSave(Ordine ordine) throws SQLException {
         
         String insertSQL = "INSERT INTO " + TABLE_NAME + " (id, metodo_pagamento, data_ordine, stato, totale, utente_email) VALUES (?, ?, ?, ?, ?, ?)";
-
+        int result = 0;
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
             
@@ -39,14 +39,15 @@ public class OrdineDAOImpl implements OrdineDAO {
             
             preparedStatement.setString(6, ordine.getUtente() != null ? ordine.getUtente().getEmail() : null);
 
-            preparedStatement.executeUpdate();
+            result = preparedStatement.executeUpdate();
         }
+        return (result != 0);
     }
 
     @Override
-    public void doUpdate(Ordine ordine) throws SQLException {
+    public boolean doUpdate(Ordine ordine) throws SQLException {
         String updateSQL = "UPDATE " + TABLE_NAME + " SET metodo_pagamento = ?, data_ordine = ?, stato = ?, totale = ?, utente_email = ? WHERE id = ?";
-
+        int result = 0;
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
             
@@ -57,8 +58,9 @@ public class OrdineDAOImpl implements OrdineDAO {
             preparedStatement.setString(5, ordine.getUtente() != null ? ordine.getUtente().getEmail() : null);
             preparedStatement.setInt(6, ordine.getId());
 
-            preparedStatement.executeUpdate();
+            result = preparedStatement.executeUpdate();
         }
+        return (result != 0);
     }
 
     @Override

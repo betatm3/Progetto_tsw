@@ -6,9 +6,9 @@ import model.Stato;
 
 public interface OrdineDAO {
 
-	void doSave(Ordine ordine) throws SQLException;
+	boolean doSave(Ordine ordine) throws SQLException;
 
-	void doUpdate(Ordine ordine) throws SQLException;
+	boolean doUpdate(Ordine ordine) throws SQLException;
 
 	boolean doDelete(int id) throws SQLException;
 

@@ -20,31 +20,33 @@ public class ColoreDAOImpl implements ColoreDAO {
     }
 
     @Override
-    public void doSave(Colore colore) throws SQLException {
+    public boolean doSave(Colore colore) throws SQLException {
         String insertSQL = "INSERT INTO " + TABLE_NAME + " (codice, nome) VALUES (?, ?)";
-
+        int result = 0;
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
             
             preparedStatement.setString(1, colore.getCodice());
             preparedStatement.setString(2, colore.getNome());
 
-            preparedStatement.executeUpdate();
+            result = preparedStatement.executeUpdate();
         }
+        return (result != 0);
     }
 
     @Override
-    public void doUpdate(Colore colore) throws SQLException {
+    public boolean doUpdate(Colore colore) throws SQLException {
         String updateSQL = "UPDATE " + TABLE_NAME + " SET nome = ? WHERE codice = ?";
-
+        int result = 0;
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
             
             preparedStatement.setString(1, colore.getNome());
             preparedStatement.setString(2, colore.getCodice());
 
-            preparedStatement.executeUpdate();
+            result = preparedStatement.executeUpdate();
         }
+        return (result != 0);
     }
 
     @Override

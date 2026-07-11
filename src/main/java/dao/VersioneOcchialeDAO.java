@@ -1,14 +1,19 @@
 package dao;
+import java.util.ArrayList;
 import java.util.Collection;
 import model.VersioneOcchiale;
 import model.Genere;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface VersioneOcchialeDAO {
 
-	void doSave(VersioneOcchiale versione) throws SQLException;
+	boolean doSave(VersioneOcchiale versione) throws SQLException;
 
-    void doUpdate(VersioneOcchiale versione) throws SQLException;
+    boolean doUpdate(VersioneOcchiale versione) throws SQLException;
 
     boolean doDelete(int codice) throws SQLException;
 
@@ -34,6 +39,10 @@ public interface VersioneOcchialeDAO {
 
     Collection<VersioneOcchiale> doRetrieveAll(String order) throws SQLException;
     
+    Collection<VersioneOcchiale> doRetrieveByMarca(String marcaScelta) throws SQLException;
+    
+    Collection<VersioneOcchiale> doRetrieveByModello(String modelloScelto) throws SQLException;
+        
     VersioneOcchiale doRetrieveCorrenteByOcchiale(int idOcchiale) throws SQLException;
 
 }

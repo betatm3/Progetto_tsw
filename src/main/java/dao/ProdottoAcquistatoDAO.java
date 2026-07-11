@@ -7,15 +7,15 @@ import model.ProdottoAcquistato;
 
 public interface ProdottoAcquistatoDAO {
     
-    public void doSave(ProdottoAcquistato prodotto) throws SQLException;
+    boolean doSave(ProdottoAcquistato prodotto) throws SQLException;
     
-    public void doUpdate(ProdottoAcquistato prodotto) throws SQLException;
+    boolean doUpdate(ProdottoAcquistato prodotto) throws SQLException;
     
-    public boolean doDelete(int numero) throws SQLException;
+    boolean doDelete(int numero) throws SQLException;
     
-    public ProdottoAcquistato doRetrieveByKey(int numero) throws SQLException;
+    ProdottoAcquistato doRetrieveByKey(int numero) throws SQLException;
     
-    public Collection<ProdottoAcquistato> doRetrieveByOrdine(int id_ordine) throws SQLException;
+    Collection<ProdottoAcquistato> doRetrieveByOrdine(int id_ordine) throws SQLException;
     
-    public Collection<ProdottoAcquistato> doRetrieveAll(String order) throws SQLException;
+    Collection<ProdottoAcquistato> doRetrieveAll(String order) throws SQLException;
 }

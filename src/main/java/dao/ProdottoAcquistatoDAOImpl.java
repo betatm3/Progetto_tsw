@@ -24,9 +24,9 @@ public class ProdottoAcquistatoDAOImpl implements ProdottoAcquistatoDAO {
     }
 
     @Override
-    public void doSave(ProdottoAcquistato prodotto) throws SQLException {
+    public boolean doSave(ProdottoAcquistato prodotto) throws SQLException {
         String insertSQL = "INSERT INTO " + TABLE_NAME + " (numero, ordine_id, quantita, colore_codice, versione_codice, occhiale_id) VALUES (?, ?, ?, ?, ?, ?)";
-
+        int result = 0;
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
             
@@ -38,14 +38,15 @@ public class ProdottoAcquistatoDAOImpl implements ProdottoAcquistatoDAO {
             preparedStatement.setInt(5, prodotto.getVersioneOcchiale() != null ? prodotto.getVersioneOcchiale().getCodice() : 0);
             preparedStatement.setInt(6, prodotto.getOcchiale() != null ? prodotto.getOcchiale().getId() : 0);
 
-            preparedStatement.executeUpdate();
+            result = preparedStatement.executeUpdate();
         }
+        return (result != 0);
     }
 
     @Override
-    public void doUpdate(ProdottoAcquistato prodotto) throws SQLException {
+    public boolean doUpdate(ProdottoAcquistato prodotto) throws SQLException {
         String updateSQL = "UPDATE " + TABLE_NAME + " SET ordine_id = ?, quantita = ?, colore_codice = ?, versione_codice = ?, occhiale_id = ? WHERE numero = ?";
-
+        int result = 0;
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
             
@@ -56,8 +57,9 @@ public class ProdottoAcquistatoDAOImpl implements ProdottoAcquistatoDAO {
             preparedStatement.setInt(5, prodotto.getOcchiale() != null ? prodotto.getOcchiale().getId() : 0);
             preparedStatement.setInt(6, prodotto.getNumero());
 
-            preparedStatement.executeUpdate();
+            result = preparedStatement.executeUpdate();
         }
+        return (result != 0);
     }
 
     @Override

@@ -22,45 +22,51 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
     }
 
     @Override
-    public void doSave(VersioneOcchiale versione) throws SQLException {
-        String insertSQL = "INSERT INTO " + TABLE_NAME + " (codice, genere, taglia, montatura, forma, materiale, prezzo, corrente, occhiale_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+    public boolean doSave(VersioneOcchiale versione) throws SQLException {
+        String insertSQL = "INSERT INTO " + TABLE_NAME + " (codice, marca, modello, genere, taglia, montatura, forma, materiale, prezzo, corrente, occhiale_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        int result = 0;
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
             
             preparedStatement.setInt(1, versione.getCodice());
-            preparedStatement.setString(2, versione.getGenere() != null ? versione.getGenere().name() : null);
-            preparedStatement.setString(3, versione.getTaglia());
-            preparedStatement.setString(4, versione.getMontatura());
-            preparedStatement.setString(5, versione.getForma());
-            preparedStatement.setString(6, versione.getMateriale());
-            preparedStatement.setDouble(7, versione.getPrezzo());
-            preparedStatement.setBoolean(8, versione.isCorrente());
-            preparedStatement.setInt(9, versione.getOcchiale() != null ? versione.getOcchiale().getId() : 0);
+            preparedStatement.setString(2, versione.getMarca());
+            preparedStatement.setString(3, versione.getModello());
+            preparedStatement.setString(4, versione.getGenere() != null ? versione.getGenere().name() : null);
+            preparedStatement.setString(5, versione.getTaglia());
+            preparedStatement.setString(6, versione.getMontatura());
+            preparedStatement.setString(7, versione.getForma());
+            preparedStatement.setString(8, versione.getMateriale());
+            preparedStatement.setDouble(9, versione.getPrezzo());
+            preparedStatement.setBoolean(10, versione.isCorrente());
+            preparedStatement.setInt(11, versione.getOcchiale() != null ? versione.getOcchiale().getId() : 0);
 
-            preparedStatement.executeUpdate();
+            result = preparedStatement.executeUpdate();
         }
+        return (result != 0);
     }
 
     @Override
-    public void doUpdate(VersioneOcchiale versione) throws SQLException {
-        String updateSQL = "UPDATE " + TABLE_NAME + " SET genere = ?, taglia = ?, montatura = ?, forma = ?, materiale = ?, prezzo = ?, corrente = ?, occhiale_id = ? WHERE codice = ?";
-
+    public boolean doUpdate(VersioneOcchiale versione) throws SQLException {
+        String updateSQL = "UPDATE " + TABLE_NAME + " SET marca = ?, modello = ?, genere = ?, taglia = ?, montatura = ?, forma = ?, materiale = ?, prezzo = ?, corrente = ? WHERE occhiale_id = ? AND codice = ?";
+        int result = 0;
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
             
-            preparedStatement.setString(1, versione.getGenere() != null ? versione.getGenere().name() : null);
-            preparedStatement.setString(2, versione.getTaglia());
-            preparedStatement.setString(3, versione.getMontatura());
-            preparedStatement.setString(4, versione.getForma());
-            preparedStatement.setString(5, versione.getMateriale());
-            preparedStatement.setDouble(6, versione.getPrezzo());
-            preparedStatement.setBoolean(7, versione.isCorrente());
-            preparedStatement.setInt(8, versione.getOcchiale() != null ? versione.getOcchiale().getId() : 0);
-            preparedStatement.setInt(9, versione.getCodice());
+        	preparedStatement.setString(1, versione.getMarca());
+            preparedStatement.setString(2, versione.getModello());
+            preparedStatement.setString(3, versione.getGenere() != null ? versione.getGenere().name() : null);
+            preparedStatement.setString(4, versione.getTaglia());
+            preparedStatement.setString(5, versione.getMontatura());
+            preparedStatement.setString(6, versione.getForma());
+            preparedStatement.setString(7, versione.getMateriale());
+            preparedStatement.setDouble(8, versione.getPrezzo());
+            preparedStatement.setBoolean(9, versione.isCorrente());
+            preparedStatement.setInt(10, versione.getOcchiale() != null ? versione.getOcchiale().getId() : 0);
+            preparedStatement.setInt(11, versione.getCodice());
 
-            preparedStatement.executeUpdate();
+            result = preparedStatement.executeUpdate();
         }
+        return (result != 0);
     }
 
     @Override
@@ -307,10 +313,52 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
         }
         return versione; 
     }
+    
+    @Override
+    public Collection<VersioneOcchiale> doRetrieveByMarca(String marcaScelta) throws SQLException {
+        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE marca = ?";
+        Collection<VersioneOcchiale> lista = new ArrayList<>();
+
+        try (Connection connection = ds.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
+            
+            preparedStatement.setString(1, marcaScelta);
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(leggiDBVersioneOcchiale(rs));
+                }
+            }
+        }
+        return lista;
+    }
+
+    @Override
+    public Collection<VersioneOcchiale> doRetrieveByModello(String modelloScelto) throws SQLException {
+        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE modello = ?";
+        Collection<VersioneOcchiale> lista = new ArrayList<>();
+
+        try (Connection connection = ds.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
+            
+            preparedStatement.setString(1, modelloScelto);
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(leggiDBVersioneOcchiale(rs));
+                }
+            }
+        }
+        return lista;
+    }
+    
 
     private VersioneOcchiale leggiDBVersioneOcchiale(ResultSet rs) throws SQLException {
         VersioneOcchiale v = new VersioneOcchiale();
         v.setCodice(rs.getInt("codice"));
+        
+        v.setMarca(rs.getString("marca"));
+        v.setModello(rs.getString("modello"));
         
         String genereStr = rs.getString("genere");
         if (genereStr != null) {

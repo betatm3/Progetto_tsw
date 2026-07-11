@@ -21,9 +21,9 @@ public class DisponibileDAOImpl implements DisponibileDAO {
     }
 
     @Override
-    public void doSave(Disponibile disponibile) throws SQLException {
+    public boolean doSave(Disponibile disponibile) throws SQLException {
         String insertSQL = "INSERT INTO " + TABLE_NAME + " (occhiale_id, colore_codice, quantita) VALUES (?, ?, ?)";
-
+        int result = 0;
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
             
@@ -31,14 +31,15 @@ public class DisponibileDAOImpl implements DisponibileDAO {
             preparedStatement.setString(2, disponibile.getColore() != null ? disponibile.getColore().getCodice() : null);
             preparedStatement.setInt(3, disponibile.getQuantita());
 
-            preparedStatement.executeUpdate();
+            result = preparedStatement.executeUpdate();
         }
+        return (result != 0);
     }
 
     @Override
-    public void doUpdate(Disponibile disponibile) throws SQLException {
+    public boolean doUpdate(Disponibile disponibile) throws SQLException {
         String updateSQL = "UPDATE " + TABLE_NAME + " SET quantita = ? WHERE occhiale_id = ? AND colore_codice = ?";
-
+        int result = 0;
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
             
@@ -46,8 +47,9 @@ public class DisponibileDAOImpl implements DisponibileDAO {
             preparedStatement.setInt(2, disponibile.getOcchiale() != null ? disponibile.getOcchiale().getId() : 0);
             preparedStatement.setString(3, disponibile.getColore() != null ? disponibile.getColore().getCodice() : null);
 
-            preparedStatement.executeUpdate();
+            result = preparedStatement.executeUpdate();
         }
+        return (result != 0);
     }
 
     @Override
