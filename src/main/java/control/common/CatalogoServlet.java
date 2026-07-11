@@ -21,7 +21,7 @@ import model.Occhiale;
 import model.VersioneOcchiale;
 
 // URL della servlet
-@WebServlet("/common/catalogo")
+@WebServlet("/catalogo")
 public class CatalogoServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

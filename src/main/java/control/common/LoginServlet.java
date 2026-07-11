@@ -15,14 +15,17 @@ import javax.sql.DataSource;
 import dao.UtenteDAOImpl;
 import model.Utente;
 
-@WebServlet("/common/login")
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    @jakarta.annotation.Resource(name = "jdbc/ecommerce_db")
+    private DataSource ds;
+    
     // Il GET mostra semplicemente la pagina JSP con il form di login
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-    	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/login.jsp");
+    	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/common/login.jsp");
     	dispatcher.forward(request, response);
     }
 
@@ -42,7 +45,7 @@ public class LoginServlet extends HttpServlet {
         }
 
         // 2. Recuperiamo il DataSource dal contesto dell'applicazione
-        DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+        ds = (DataSource) getServletContext().getAttribute("DataSource");
         UtenteDAOImpl utenteDAO = new UtenteDAOImpl(ds);
 
         try {

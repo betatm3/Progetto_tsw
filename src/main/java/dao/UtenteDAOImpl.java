@@ -21,9 +21,9 @@ public class UtenteDAOImpl implements UtenteDAO {
     }
 
     @Override
-    public void doSave(Utente utente) throws SQLException {
+    public boolean doSave(Utente utente) throws SQLException {
         String insertSQL = "INSERT INTO " + TABLE_NAME + " (email, password, nome, cognome, data_nascita, indirizzo, telefono, ruolo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
+        int result;
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
             
@@ -45,14 +45,15 @@ public class UtenteDAOImpl implements UtenteDAO {
             // Gestione Enum -> String
             preparedStatement.setString(8, utente.getRuolo() != null ? utente.getRuolo().name() : null);
 
-            preparedStatement.executeUpdate();
+            result = preparedStatement.executeUpdate();
         }
+        return (result != 0);
     }
 
     @Override
-    public void doUpdate(Utente utente) throws SQLException {
+    public boolean doUpdate(Utente utente) throws SQLException {
         String updateSQL = "UPDATE " + TABLE_NAME + " SET password = ?, nome = ?, cognome = ?, data_nascita = ?, indirizzo = ?, telefono = ?, ruolo = ? WHERE email = ?";
-
+        int result;
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
             
@@ -71,8 +72,9 @@ public class UtenteDAOImpl implements UtenteDAO {
             preparedStatement.setString(7, utente.getRuolo() != null ? utente.getRuolo().name() : null);
             preparedStatement.setString(8, utente.getEmail());
 
-            preparedStatement.executeUpdate();
+            result = preparedStatement.executeUpdate();
         }
+        return (result != 0);
     }
 
     @Override

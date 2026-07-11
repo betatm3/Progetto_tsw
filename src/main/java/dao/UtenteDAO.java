@@ -8,9 +8,9 @@ import model.Ruolo;
 
 public interface UtenteDAO {
     
-    public void doSave(Utente utente) throws SQLException;
+    public boolean doSave(Utente utente) throws SQLException;
     
-    public void doUpdate(Utente utente) throws SQLException;
+    public boolean doUpdate(Utente utente) throws SQLException;
     
     public boolean doDelete(String email) throws SQLException;
     
