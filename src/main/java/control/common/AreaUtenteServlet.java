@@ -63,7 +63,6 @@ public class AreaUtenteServlet extends HttpServlet {
 
             if (ordini != null) {
                 for (Ordine ordine : ordini) {
-                    // Recupera le righe dei prodotti acquistati in questo ordine
                     Collection<ProdottoAcquistato> prodotti = prodottoAcquistatoDAO.doRetrieveByOrdine(ordine.getId());
                     
                     if (prodotti != null) {
@@ -74,14 +73,15 @@ public class AreaUtenteServlet extends HttpServlet {
                                 if (occCompleto != null) {
                                     prod.setOcchiale(occCompleto);
                                 }
-                            }
-                            // Carica la versione commerciale
-                            if (prod.getVersioneOcchiale() != null) {
-                                VersioneOcchiale verCompleta = versioneDAO.doRetrieveByKey(prod.getVersioneOcchiale().getCodice());
-                                if (verCompleta != null) {
-                                    prod.setVersioneOcchiale(verCompleta);
+                                // Carica la versione commerciale
+                                if (prod.getVersioneOcchiale() != null) {
+                                	VersioneOcchiale verCompleta = versioneDAO.doRetrieveByKey(prod.getVersioneOcchiale().getCodice(), occCompleto.getId());
+                                	if (verCompleta != null) {
+                                		prod.setVersioneOcchiale(verCompleta);
+                                	}
                                 }
                             }
+                            
                             // Carica i dettagli del colore
                             if (prod.getColore() != null) {
                                 Colore colCompleto = coloreDAO.doRetrieveByKey(prod.getColore().getCodice());
@@ -95,12 +95,10 @@ public class AreaUtenteServlet extends HttpServlet {
                 }
             }
 
-            // Passiamo gli ordini e i relativi dettagli di prodotto alla JSP
             request.setAttribute("ordini", ordini);
             request.setAttribute("prodottiOrdineMap", prodottiOrdineMap);
 
         } catch (SQLException e) {
-        	// Serve per stampare la traccia dell'errore sulla console del server locale a scopo di debug
         	e.printStackTrace();
             request.setAttribute("errore", "Errore nel caricamento dello storico ordini dal database.");
         }

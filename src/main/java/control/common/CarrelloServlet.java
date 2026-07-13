@@ -108,7 +108,7 @@ public class CarrelloServlet extends HttpServlet {
             
             try {
 				nuovo.setOcchiale(o.doRetrieveByKey(idOcchiale));
-				nuovo.setVersioneOcchiale(ver.doRetrieveByKey(codiceVersioneOcchiale));
+				nuovo.setVersioneOcchiale(ver.doRetrieveByKey(codiceVersioneOcchiale, idOcchiale));
 				nuovo.setColore(c.doRetrieveByKey(coloreScelto));
 			} catch (SQLException e) {
 				e.printStackTrace();
