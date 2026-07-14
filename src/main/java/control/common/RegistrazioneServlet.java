@@ -72,8 +72,6 @@ public class RegistrazioneServlet extends HttpServlet {
             return;
         }
 
-        // 3. Recuperiamo il DataSource dal contesto
-        ds = (DataSource) getServletContext().getAttribute("DataSource");
         UtenteDAOImpl utenteDAO = new UtenteDAOImpl(ds);
 
         try {

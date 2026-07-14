@@ -44,8 +44,6 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        // 2. Recuperiamo il DataSource dal contesto dell'applicazione
-        ds = (DataSource) getServletContext().getAttribute("DataSource");
         UtenteDAOImpl utenteDAO = new UtenteDAOImpl(ds);
 
         try {

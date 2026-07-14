@@ -336,6 +336,77 @@
             align-items: center;
             gap: 6px;
         }
+
+        /* Stile pulsante radio personalizzato e allineamento */
+        .variant-pill label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .variant-pill input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--glass-border);
+            border-radius: 50%;
+            outline: none;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .variant-pill input[type="radio"]:checked {
+            border-color: #818cf8;
+            background: #818cf8;
+            box-shadow: 0 0 8px rgba(129, 140, 248, 0.5);
+        }
+
+        .variant-pill.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Pulsante Aggiungi al Carrello */
+        .btn-add-to-cart {
+            background: var(--accent-gradient);
+            color: #ffffff;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 14px;
+            cursor: pointer;
+            margin-top: 25px;
+            box-shadow: 0 4px 15px rgba(129, 140, 248, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-add-to-cart:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(129, 140, 248, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .btn-add-to-cart:disabled {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
     </style>
 </head>
 <body>
@@ -448,68 +519,92 @@
 
                 <!-- Varianti e Disponibilità -->
                 <div class="variants-section">
-                    <div class="variants-title">
-                        <span>🎨</span> Varianti di Colore &amp; Stock
-                    </div>
-                    
-                    <div class="variants-container">
-                        <% 
-                            if (occhiale.getDisponibilita() != null && !occhiale.getDisponibilita().isEmpty()) {
-                                for (Disponibile disp : occhiale.getDisponibilita()) {
-                                    String codiceColore = disp.getColore().getCodice();
-                                    String nomeColore = disp.getColore().getNome() != null ? disp.getColore().getNome() : codiceColore;
-                                    
-                                    // Determiniamo il colore esadecimale per l'anteprima visiva del pallino.
-                                    // Se il codice colore assomiglia a un esadecimale (es: #FFFFFF o FFFFFF), lo usiamo.
-                                    // Altrimenti mappiamo alcuni codici standard o usiamo una sfumatura generica.
-                                    String hexColor = "#888888"; 
-                                    if (codiceColore != null) {
-                                        String upperCol = codiceColore.toUpperCase();
-                                        if (upperCol.startsWith("#")) {
-                                            hexColor = codiceColore;
-                                        } else if (upperCol.contains("NERO") || upperCol.contains("BLACK")) {
-                                            hexColor = "#1a1a1a";
-                                        } else if (upperCol.contains("ROSSO") || upperCol.contains("RED")) {
-                                            hexColor = "#dc2626";
-                                        } else if (upperCol.contains("BLU") || upperCol.contains("BLUE")) {
-                                            hexColor = "#2563eb";
-                                        } else if (upperCol.contains("VERDE") || upperCol.contains("GREEN")) {
-                                            hexColor = "#16a34a";
-                                        } else if (upperCol.contains("ORO") || upperCol.contains("GOLD")) {
-                                            hexColor = "#d97706";
-                                        } else if (upperCol.contains("BIANCO") || upperCol.contains("WHITE")) {
-                                            hexColor = "#ffffff";
-                                        } else if (upperCol.contains("GRIGIO") || upperCol.contains("GREY") || upperCol.contains("GRAY")) {
-                                            hexColor = "#6b7280";
-                                        } else if (upperCol.contains("MARRONE") || upperCol.contains("BROWN")) {
-                                            hexColor = "#78350f";
+                    <form action="carrello" method="GET">
+                        <input type="hidden" name="action" value="aggiungi" />
+                        <input type="hidden" name="idOcchiale" value="<%= occhiale.getId() %>" />
+                        <input type="hidden" name="codiceVersioneOcchiale" value="<%= versione != null ? versione.getCodice() : 0 %>" />
+
+                        <div class="variants-title">
+                            <span>🎨</span> Scegli Colore &amp; Disponibilità
+                        </div>
+                        
+                        <div class="variants-container">
+                            <% 
+                                if (occhiale.getDisponibilita() != null && !occhiale.getDisponibilita().isEmpty()) {
+                                    boolean first = true;
+                                    boolean hasInStock = false;
+                                    for (Disponibile disp : occhiale.getDisponibilita()) {
+                                        String codiceColore = disp.getColore().getCodice();
+                                        String nomeColore = disp.getColore().getNome() != null ? disp.getColore().getNome() : codiceColore;
+                                        boolean inStock = disp.getQuantita() > 0;
+                                        if (inStock) hasInStock = true;
+                                        
+                                        String hexColor = "#888888"; 
+                                        if (codiceColore != null) {
+                                            String upperCol = codiceColore.toUpperCase();
+                                            if (upperCol.startsWith("#")) {
+                                                hexColor = codiceColore;
+                                            } else if (upperCol.contains("NERO") || upperCol.contains("BLACK")) {
+                                                hexColor = "#1a1a1a";
+                                            } else if (upperCol.contains("ROSSO") || upperCol.contains("RED")) {
+                                                hexColor = "#dc2626";
+                                            } else if (upperCol.contains("BLU") || upperCol.contains("BLUE")) {
+                                                hexColor = "#2563eb";
+                                            } else if (upperCol.contains("VERDE") || upperCol.contains("GREEN")) {
+                                                hexColor = "#16a34a";
+                                            } else if (upperCol.contains("ORO") || upperCol.contains("GOLD")) {
+                                                hexColor = "#d97706";
+                                            } else if (upperCol.contains("BIANCO") || upperCol.contains("WHITE")) {
+                                                hexColor = "#ffffff";
+                                            } else if (upperCol.contains("GRIGIO") || upperCol.contains("GREY") || upperCol.contains("GRAY")) {
+                                                hexColor = "#6b7280";
+                                            } else if (upperCol.contains("MARRONE") || upperCol.contains("BROWN")) {
+                                                hexColor = "#78350f";
+                                            }
+                                        }
+                            %>
+                                        <div class="variant-pill <%= inStock ? "" : "disabled" %>">
+                                            <label>
+                                                <input type="radio" name="coloreScelto" value="<%= codiceColore %>" 
+                                                       <%= inStock && first ? "checked" : "" %> 
+                                                       <%= inStock ? "" : "disabled" %> />
+                                                <div class="color-dot" style="background-color: <%= hexColor %>;"></div>
+                                                <div class="variant-info">
+                                                    <span class="variant-color"><%= nomeColore %></span>
+                                                    <span class="variant-qty">
+                                                        <% if (inStock) { %>
+                                                            <span class="status-badge status-instock"><%= disp.getQuantita() %> Disponibili</span>
+                                                        <% } else { %>
+                                                            <span class="status-badge status-out">Esaurito</span>
+                                                        <% } %>
+                                                    </span>
+                                                </div>
+                                            </label>
+                                        </div>
+                            <% 
+                                        if (inStock) {
+                                            first = false;
                                         }
                                     }
-                        %>
-                                    <div class="variant-pill">
-                                        <div class="color-dot" style="background-color: <%= hexColor %>;"></div>
-                                        <div class="variant-info">
-                                            <span class="variant-color"><%= nomeColore %></span>
-                                            <span class="variant-qty">
-                                                <% if (disp.getQuantita() > 0) { %>
-                                                    <span class="status-badge status-instock"><%= disp.getQuantita() %> Disponibili</span>
-                                                <% } else { %>
-                                                    <span class="status-badge status-out">Esaurito</span>
-                                                <% } %>
-                                            </span>
-                                        </div>
+                            %>
                                     </div>
-                        <% 
-                                }
-                            } else { 
-                        %>
-                                <div class="empty-variants">
-                                    <span>⚠️</span> Nessuna variante disponibile al momento.
-                                </div>
-                        <% 
-                            } 
-                        %>
-                    </div>
+                                    <button type="submit" class="btn-add-to-cart" <%= hasInStock ? "" : "disabled" %>>
+                                        <%= hasInStock ? "🛒 Aggiungi al Carrello" : "❌ Prodotto Esaurito" %>
+                                    </button>
+                            <%
+                                } else { 
+                            %>
+                                    <div class="empty-variants">
+                                        <span>⚠️</span> Nessuna variante disponibile al momento.
+                                    </div>
+                                    </div>
+                                    <button type="submit" class="btn-add-to-cart" disabled>
+                                        ❌ Prodotto Esaurito
+                                    </button>
+                            <% 
+                                } 
+                            %>
+                    </form>
                 </div>
 
             </div>
