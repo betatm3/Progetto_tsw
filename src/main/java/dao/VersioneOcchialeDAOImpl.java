@@ -354,7 +354,7 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
         }
         
         StringBuilder sql = new StringBuilder(
-            "SELECT DISTINCT v.* FROM versione_occhiale v " +
+            "SELECT DISTINCT v.*, o.id AS o_id, o.attivo AS o_attivo, o.immagine AS o_immagine, o.tipologia AS o_tipologia FROM versione_occhiale v " +
             "JOIN occhiale o ON v.occhiale_id = o.id "
         );
         
@@ -377,7 +377,7 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
             sql.append(" AND v.forma = ?");
         }
         if (marca != null && !marca.trim().isEmpty()) {
-            sql.append(" AND o.marca = ?");
+            sql.append(" AND v.marca = ?");
         }
         if (codiceColore != null) {
             sql.append(" AND d.colore_codice = ?"); 
@@ -426,37 +426,35 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
             // 5. Esecuzione e mappatura dei risultati
             ResultSet rs = ps.executeQuery();
             
-            
-            while (rs.next()) {
+                       while (rs.next()) {
                 VersioneOcchiale versione = new VersioneOcchiale();
                 
                 // 1. Settiamo tutti gli attributi di VersioneOcchiale
-                versione.setCodice(rs.getInt("v.codice"));
-                versione.setTaglia(rs.getString("v.taglia"));
-                versione.setForma(rs.getString("v.forma"));
-                versione.setMateriale(rs.getString("v.materiale"));
-                versione.setPrezzo(rs.getDouble("v.prezzo"));
-                versione.setCorrente(rs.getBoolean("v.corrente"));
-                versione.setMarca(rs.getString("v.marca"));
-                versione.setModello(rs.getString("v.modello"));
-
+                versione.setCodice(rs.getInt("codice"));
+                versione.setTaglia(rs.getString("taglia"));
+                versione.setForma(rs.getString("forma"));
+                versione.setMateriale(rs.getString("materiale"));
+                versione.setPrezzo(rs.getDouble("prezzo"));
+                versione.setCorrente(rs.getBoolean("corrente"));
+                versione.setMarca(rs.getString("marca"));
+                versione.setModello(rs.getString("modello"));
                 
-                String genereStr = rs.getString("v.genere");
+                String genereStr = rs.getString("genere");
                 if (genereStr != null) {
                     versione.setGenere(Genere.valueOf(genereStr));
                 }
                 
-                String montaturaStr = rs.getString("v.montatura");
+                String montaturaStr = rs.getString("montatura");
                 if (montaturaStr != null) {
                     versione.setMontatura(Montatura.valueOf(montaturaStr));
                 }
 
                 // 2. Mappiamo l'oggetto Occhiale direttamente dai campi della JOIN
                 Occhiale occhialeAssociato = new Occhiale();
-                occhialeAssociato.setId(rs.getInt("o.id")); 
-                occhialeAssociato.setAttivo(rs.getBoolean("o.attivo"));
-                occhialeAssociato.setImmagine(rs.getBytes("o.immagine"));
-                String tipologiaStr = rs.getString("o.tipologia");
+                occhialeAssociato.setId(rs.getInt("o_id")); 
+                occhialeAssociato.setAttivo(rs.getBoolean("o_attivo"));
+                occhialeAssociato.setImmagine(rs.getBytes("o_immagine"));
+                String tipologiaStr = rs.getString("o_tipologia");
                 if (tipologiaStr != null) {
                     occhialeAssociato.setTipo(Tipologia.valueOf(tipologiaStr));
                 }

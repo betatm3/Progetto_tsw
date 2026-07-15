@@ -16,210 +16,84 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     
-    <style>
-        :root {
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.07);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent-gradient: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
-            --accent-glow: rgba(129, 140, 248, 0.3);
-            --shadow-primary: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Outfit', sans-serif;
-            background: var(--bg-gradient);
-            background-attachment: fixed;
-            color: var(--text-primary);
-            min-height: 100vh;
-            padding: 50px 20px;
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 2.8rem;
-            font-weight: 800;
-            margin-bottom: 50px;
-            background: linear-gradient(to right, #ffffff, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.02em;
-        }
-
-        .catalogo-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .card-occhiale {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 24px;
-            box-shadow: var(--shadow-primary);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card-occhiale:hover {
-            transform: translateY(-8px);
-            border-color: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 12px 40px 0 rgba(129, 140, 248, 0.15);
-        }
-
-        .container-immagine {
-            width: 100%;
-            height: 180px;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            transition: transform 0.4s ease;
-        }
-
-        .card-occhiale:hover .container-immagine {
-            transform: scale(1.02);
-        }
-
-        .img-occhiale {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            transition: transform 0.4s ease;
-        }
-
-        .marca-modello {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: #ffffff;
-        }
-
-        .info-tecniche {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-            padding-bottom: 6px;
-        }
-
-        .info-tecniche strong {
-            color: var(--text-primary);
-        }
-
-        .prezzo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #34d399;
-            margin-top: 15px;
-            margin-bottom: 20px;
-        }
-
-        .sezione-disponibilita {
-            margin-bottom: 20px;
-        }
-
-        .titolo-disp {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 10px;
-        }
-
-        .variants-wrap {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .tag-disponibile {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            padding: 4px 8px;
-            font-size: 0.75rem;
-            color: var(--text-primary);
-        }
-
-        .tag-esaurito {
-            color: #f87171;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        /* Bottone Dettagli */
-        .btn-dettaglio {
-            background: var(--accent-gradient);
-            color: #ffffff;
-            text-align: center;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            padding: 12px;
-            border-radius: 12px;
-            display: block;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px var(--accent-glow);
-        }
-
-        .btn-dettaglio:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(129, 140, 248, 0.5);
-            filter: brightness(1.1);
-        }
-
-        .msg-vuoto {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 60px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-    </style>
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/comune.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/catalogo.css">
 </head>
 <body>
+<%@ include file="../partials/header.jsp" %>
 
     <h1>Il nostro Catalogo Occhiali</h1>
+
+    <!-- Sezione Filtri -->
+    <div class="filters-section">
+        <div class="filters-title">
+            <svg viewBox="0 0 24 24"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+            Filtra Catalogo
+        </div>
+        <form action="catalogo" method="GET">
+            <!-- Manteniamo il parametro tipo se l'utente ci è arrivato cliccando sui link del menu -->
+            <% 
+                String currentTipo = request.getParameter("tipo"); 
+                if (currentTipo != null && !currentTipo.trim().isEmpty()) { 
+            %>
+                <input type="hidden" name="tipo" value="<%= currentTipo %>" />
+            <% 
+                } 
+            %>
+            
+            <div class="filters-grid">
+                <div class="filter-field">
+                    <label class="filter-label" for="filterMarca">Marca</label>
+                    <input type="text" id="filterMarca" name="marca" class="filter-input" placeholder="Es. Ray-Ban..." value="<%= request.getParameter("marca") != null ? request.getParameter("marca") : "" %>" />
+                </div>
+                
+                <div class="filter-field">
+                    <label class="filter-label" for="filterGenere">Genere</label>
+                    <select id="filterGenere" name="genere" class="filter-input">
+                        <option value="">Tutti</option>
+                        <option value="Uomo" <%= "Uomo".equalsIgnoreCase(request.getParameter("genere")) ? "selected" : "" %>>Uomo</option>
+                        <option value="Donna" <%= "Donna".equalsIgnoreCase(request.getParameter("genere")) ? "selected" : "" %>>Donna</option>
+                        <option value="Unisex" <%= "Unisex".equalsIgnoreCase(request.getParameter("genere")) ? "selected" : "" %>>Unisex</option>
+                    </select>
+                </div>
+
+                <div class="filter-field">
+                    <label class="filter-label" for="filterMateriale">Materiale</label>
+                    <input type="text" id="filterMateriale" name="materiale" class="filter-input" placeholder="Es. Acetato, Metallo..." value="<%= request.getParameter("materiale") != null ? request.getParameter("materiale") : "" %>" />
+                </div>
+
+                <div class="filter-field">
+                    <label class="filter-label" for="filterForma">Forma</label>
+                    <input type="text" id="filterForma" name="forma" class="filter-input" placeholder="Es. Rotonda, Aviator..." value="<%= request.getParameter("forma") != null ? request.getParameter("forma") : "" %>" />
+                </div>
+
+                <div class="filter-field">
+                    <label class="filter-label" for="filterColore">Colore</label>
+                    <input type="text" id="filterColore" name="colore" class="filter-input" placeholder="Es. Nero, Oro..." value="<%= request.getParameter("colore") != null ? request.getParameter("colore") : "" %>" />
+                </div>
+
+                <div class="filter-field">
+                    <label class="filter-label" for="filterTaglia">Taglia</label>
+                    <input type="text" id="filterTaglia" name="taglia" class="filter-input" placeholder="Es. M, L..." value="<%= request.getParameter("taglia") != null ? request.getParameter("taglia") : "" %>" />
+                </div>
+                
+                <div class="filter-field">
+                    <label class="filter-label" for="filterPrezzoMin">Prezzo Minimo (€)</label>
+                    <input type="number" id="filterPrezzoMin" name="prezzoMin" class="filter-input" placeholder="Es. 50" min="0" step="10" value="<%= request.getParameter("prezzoMin") != null ? request.getParameter("prezzoMin") : "" %>" />
+                </div>
+
+                <div class="filter-field">
+                    <label class="filter-label" for="filterPrezzoMax">Prezzo Massimo (€)</label>
+                    <input type="number" id="filterPrezzoMax" name="prezzoMax" class="filter-input" placeholder="Es. 150" min="0" step="10" value="<%= request.getParameter("prezzoMax") != null ? request.getParameter("prezzoMax") : "" %>" />
+                </div>
+            </div>
+            
+            <div class="filters-actions">
+                <button type="submit" class="btn-filter">Filtra</button>
+                <a href="catalogo<%= (currentTipo != null) ? "?tipo=" + currentTipo : "" %>" class="btn-reset">Reset</a>
+            </div>
+        </form>
+    </div>
 
     <div class="catalogo-container">
         <% 
@@ -308,6 +182,6 @@
             } 
         %>
     </div>
-
+<%@ include file="../partials/footer.jsp" %>
 </body>
 </html>

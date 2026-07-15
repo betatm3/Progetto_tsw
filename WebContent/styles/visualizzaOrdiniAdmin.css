@@ -1,0 +1,341 @@
+/* ==========================================================================
+   GG EYEWEAR — Stili specifici della visualizzazione Ordini Admin (visualizzaOrdiniAdmin.css)
+   ========================================================================== */
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--paper-soft);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+.container {
+  width: calc(100% - 40px);
+  max-width: 1100px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(43, 43, 43, 0.05);
+  padding: 40px;
+  animation: fadeIn 0.6s ease-out;
+  margin: 40px auto;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Bottone Indietro */
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(43, 43, 43, 0.7);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-bottom: 30px;
+  transition: all 0.3s ease;
+  width: fit-content;
+}
+
+.btn-back:hover {
+  color: var(--ink);
+  transform: translateX(-5px);
+}
+
+.btn-back svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  text-align: center;
+  color: var(--ink);
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: rgba(43, 43, 43, 0.6);
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* Banner Successo */
+.success-banner {
+  background: rgba(90, 114, 97, 0.1);
+  border: 1px solid rgba(90, 114, 97, 0.3);
+  color: var(--bottle);
+  padding: 14px 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  font-weight: 500;
+  text-align: center;
+  font-size: 0.95rem;
+  animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Lista Ordini */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-card {
+  background: var(--paper-soft);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.order-card:hover {
+  border-color: var(--grey);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.order-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.order-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.order-id {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.order-customer {
+  font-size: 0.9rem;
+  color: rgba(43, 43, 43, 0.6);
+}
+
+.order-customer span {
+  color: var(--grey);
+  font-weight: 500;
+}
+
+.order-meta {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meta-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(43, 43, 43, 0.6);
+}
+
+.meta-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.meta-value.price {
+  color: var(--bottle);
+  font-size: 1.05rem;
+}
+
+/* Form di modifica stato */
+.status-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 6px 12px;
+  border-radius: 12px;
+}
+
+.status-select {
+  background: transparent;
+  border: none;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  padding-right: 10px;
+}
+
+.status-select option {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.status-btn {
+  background: var(--ink);
+  border: none;
+  color: var(--paper);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.status-btn:hover {
+  transform: translateY(-1px);
+  background: var(--amber);
+  color: var(--ink);
+}
+
+.status-btn:active {
+  transform: translateY(0);
+}
+
+.empty-orders {
+  text-align: center;
+  color: rgba(43, 43, 43, 0.6);
+  font-style: italic;
+  padding: 40px 0;
+  font-size: 1.05rem;
+}
+
+/* Sezione Filtri */
+.filters-section {
+  background: var(--paper-soft);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 30px;
+}
+
+.filters-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filters-title svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(43, 43, 43, 0.6);
+  font-weight: 600;
+}
+
+.filter-input {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.85rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.filter-input:focus {
+  border-color: var(--ink);
+}
+
+.filter-input::placeholder {
+  color: rgba(43, 43, 43, 0.4);
+}
+
+.filters-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  align-items: center;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+
+.btn-filter {
+  background: var(--ink);
+  border: none;
+  color: var(--paper);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-filter:hover {
+  background: var(--amber);
+  color: var(--ink);
+  transform: translateY(-1px);
+}
+
+.btn-reset {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  color: rgba(43, 43, 43, 0.7);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.btn-reset:hover {
+  background: var(--paper-soft);
+  color: var(--ink);
+}

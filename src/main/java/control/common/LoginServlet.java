@@ -60,12 +60,12 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("utenteLoggato", utente);
 
                 // 5. AUTORIZZAZIONE (Rendrizzamento differenziato in base al ruolo)
-                if ("ADMIN".equalsIgnoreCase(utente.getRuolo().name())) {
+                if ("AMMINISTRATORE".equalsIgnoreCase(utente.getRuolo().name())) {
                     // Se è Admin, lo mandiamo alla dashboard di controllo
                     response.sendRedirect(request.getContextPath() + "/admin/dashboard");
                 } else {
-                    // Se è un Cliente normale, lo rimandiamo al catalogo o alla home
-                    response.sendRedirect(request.getContextPath() + "/catalogo");
+                    // Se è un Cliente normale, lo rimandiamo alla home
+                    response.sendRedirect(request.getContextPath() + "/home");
                 }
                 return; // Interrompiamo l'esecuzione avendo fatto il redirect
 

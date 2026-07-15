@@ -1,0 +1,329 @@
+/* ==========================================================================
+   GG EYEWEAR — Stili specifici della Home Page (home.css)
+   ========================================================================== */
+
+/* ---------- HERO ---------- */
+.hero {
+  position: relative;
+  border-bottom: 1px solid var(--ink);
+  overflow: hidden;
+}
+
+.hero-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  min-height: 560px;
+  gap: 40px;
+}
+
+.chart-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 18px;
+  padding-right: 60px;
+  opacity: 0.05;
+  pointer-events: none;
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  text-align: right;
+}
+
+.chart-bg span:nth-child(1) { font-size: 120px; }
+.chart-bg span:nth-child(2) { font-size: 88px; }
+.chart-bg span:nth-child(3) { font-size: 60px; }
+.chart-bg span:nth-child(4) { font-size: 38px; }
+
+.hero-copy .eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bottle);
+  font-weight: 700;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-copy .eyebrow::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: var(--bottle);
+}
+
+.hero-copy h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: clamp(40px, 5vw, 62px);
+  line-height: 1.03;
+  letter-spacing: -0.01em;
+  margin-bottom: 22px;
+}
+
+.hero-copy h1 em {
+  font-style: italic;
+  color: var(--amber);
+}
+
+.hero-copy p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #3d3d3d;
+  max-width: 420px;
+  margin-bottom: 30px;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 15px 28px;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  border-radius: 999px;
+  transition: transform .2s ease, background .2s ease;
+}
+
+.btn-primary:hover {
+  background: var(--bottle);
+  transform: translateY(-2px);
+}
+
+.btn-primary svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+.hero-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 420px;
+}
+
+.lens-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+}
+
+.lens-ring.r1 {
+  width: 420px;
+  height: 420px;
+}
+
+.lens-ring.r2 {
+  width: 340px;
+  height: 340px;
+  border-color: var(--amber);
+  opacity: .5;
+}
+
+.glasses-illustration {
+  width: 280px;
+  height: auto;
+  position: relative;
+  z-index: 2;
+}
+
+.glasses-illustration path, .glasses-illustration circle {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.glasses-illustration .tint {
+  fill: var(--amber);
+  opacity: .18;
+  stroke: none;
+}
+
+.new-tag {
+  position: absolute;
+  bottom: 28px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  padding: 8px 14px;
+}
+
+.new-tag .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--rust);
+}
+
+/* ---------- FEATURED ---------- */
+.featured {
+  padding: 88px 0 100px;
+}
+
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 56px;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 22px;
+}
+
+.section-head .label {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bottle);
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.section-head h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 40px;
+  letter-spacing: -0.01em;
+}
+
+.section-head .count {
+  font-size: 13px;
+  color: #666;
+}
+
+.featured-groups {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  position: relative;
+}
+
+.featured-groups::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: var(--line);
+  transform: translateX(-50%);
+}
+
+.group h3 {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 21px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.group h3::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+/* ---------- INTERNAL STYLE STRETCH ---------- */
+.product-frame img {
+  width: 72%;
+  height: 72%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  z-index: 2;
+  transition: transform .25s ease;
+}
+
+.product-card:hover .product-frame img {
+  transform: scale(1.08);
+}
+
+/* Slider Hero */
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+.slider-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(26, 26, 26, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.slider-dot.active {
+  background: var(--ink);
+  transform: scale(1.25);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 860px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 48px 20px;
+  }
+  .hero-visual {
+    height: 300px;
+    order: -1;
+  }
+  .featured {
+    padding: 56px 0 70px;
+  }
+  .featured-groups {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .featured-groups::before {
+    display: none;
+  }
+}

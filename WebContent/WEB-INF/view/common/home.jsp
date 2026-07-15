@@ -13,49 +13,8 @@
 <title>GG Eyewear — Occhiali</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/style.css">
-<style>
-  .product-frame img {
-    width: 72%;
-    height: 72%;
-    object-fit: contain;
-    mix-blend-mode: multiply;
-    z-index: 2;
-    transition: transform .25s ease;
-  }
-  .product-card:hover .product-frame img {
-    transform: scale(1.08);
-  }
-  
-  /* Slider Hero */
-  .hero-slide {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 0.8s ease-in-out;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-size: cover;
-    background-position: center;
-  }
-  .hero-slide.active {
-    opacity: 1;
-    z-index: 2;
-  }
-  .slider-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(26, 26, 26, 0.2);
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  .slider-dot.active {
-    background: var(--ink);
-    transform: scale(1.25);
-  }
-</style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/comune.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/home.css">
 </head>
 <body>
 
@@ -74,29 +33,7 @@
   int totalModels = (soleList != null ? soleList.size() : 0) + (vistaList != null ? vistaList.size() : 0);
 %>
 
-<header class="site-header">
-  <div class="header-inner">
-    <a href="${pageContext.request.contextPath}/home" class="logo"><span class="mark">GG<em>.</em></span><span class="sub">Eyewear</span></a>
-
-    <nav class="main-nav">
-      <a href="#sole">Occhiali da sole</a>
-      <a href="#vista">Occhiali da vista</a>
-      <a href="${pageContext.request.contextPath}/catalogo" class="outlet">Outlet</a>
-    </nav>
-
-    <div class="header-actions">
-      <a href="${pageContext.request.contextPath}/area-utente" class="icon-btn" aria-label="Area utente">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
-      </a>
-      <a href="${pageContext.request.contextPath}/carrello" class="icon-btn" aria-label="Carrello">
-        <svg viewBox="0 0 24 24"><path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9.5" cy="20.5" r="1.2" fill="var(--ink)" stroke="none"/><circle cx="17.5" cy="20.5" r="1.2" fill="var(--ink)" stroke="none"/></svg>
-        <% if (cartCount > 0) { %>
-          <span class="cart-count"><%= cartCount %></span>
-        <% } %>
-      </a>
-    </div>
-  </div>
-</header>
+<%@ include file="../partials/header.jsp" %>
 
 <section class="hero">
   <div class="chart-bg" aria-hidden="true">
@@ -275,12 +212,7 @@
   </div>
 </section>
 
-<footer>
-  <div class="footer-inner">
-    <a href="${pageContext.request.contextPath}/home" class="logo"><span class="mark">GG<em>.</em></span><span class="sub">Eyewear</span></a>
-    <p>© 2026 GG Eyewear </p>
-  </div>
-</footer>
+<%@ include file="../partials/footer.jsp" %>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
