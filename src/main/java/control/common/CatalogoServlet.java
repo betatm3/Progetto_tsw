@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import dao.VersioneOcchialeDAOImpl;
-import dao.OcchialeDAOImpl;
 import dao.DisponibileDAOImpl;
 
 import model.Disponibile;

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
     <Resource 
-        name="jdbc/EcommerceDB"
+        name="jdbc/ecommerce_db"
         auth="Container" 
         type="javax.sql.DataSource" 
         factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
         driverClassName="com.mysql.cj.jdbc.Driver" 
         url="jdbc:mysql://localhost:3306/ecommerce_db?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC" 
         username="root"
-        password="Napolicampione2023" 
+        password="1Colione720%" 
         maxTotal="20"
         maxIdle="10"
         maxWaitMillis="-1"

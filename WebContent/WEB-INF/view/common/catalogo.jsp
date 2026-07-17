@@ -168,8 +168,8 @@
                             </div>
                         </div>
 
-                        <!-- Bottone per visualizzare il dettaglio -->
-                        <a href="dettaglio?id=<%= occhiale.getId() %>" class="btn-dettaglio">Vedi Dettagli</a>
+                        <!-- Bottone per visualizzare l'occhiale -->
+                        <a href="occhiale?id=<%= occhiale.getId() %>" class="btn-occhiale">Vedi Dettagli</a>
                     </div>
         <% 
                 } // Fine del ciclo for sugli occhiali

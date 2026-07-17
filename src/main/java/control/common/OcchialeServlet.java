@@ -22,8 +22,8 @@ import model.VersioneOcchiale;
 import model.Disponibile;
 import model.Colore;
 
-@WebServlet("/dettaglio")
-public class DettaglioProdottoServlet extends HttpServlet {
+@WebServlet("/occhiale")
+public class OcchialeServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @jakarta.annotation.Resource(name = "jdbc/ecommerce_db")
@@ -79,7 +79,7 @@ public class DettaglioProdottoServlet extends HttpServlet {
                 // Passiamo l'oggetto completo di dettagli alla JSP
                 request.setAttribute("prodotto", occhiale);
 
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/common/dettaglioProdotto.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/common/occhiale.jsp");
                 dispatcher.forward(request, response);
             } else {
                 // Prodotto inesistente o non attivo, torniamo al catalogo

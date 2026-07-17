@@ -122,7 +122,7 @@
                         prezzoStr = "Prezzo N/D";
                     }
         %>
-                    <a href="${pageContext.request.contextPath}/dettaglio?id=<%= occhiale.getId() %>" class="product-card">
+                    <a href="${pageContext.request.contextPath}/occhiale?id=<%= occhiale.getId() %>" class="product-card">
                       <div class="product-frame">
                         <% 
                             if (occhiale.getImmagine() != null && occhiale.getImmagine().length > 0) {
@@ -178,7 +178,7 @@
                         prezzoStr = "Prezzo N/D";
                     }
         %>
-                    <a href="${pageContext.request.contextPath}/dettaglio?id=<%= occhiale.getId() %>" class="product-card">
+                    <a href="${pageContext.request.contextPath}/occhiale?id=<%= occhiale.getId() %>" class="product-card">
                       <div class="product-frame">
                         <% 
                             if (occhiale.getImmagine() != null && occhiale.getImmagine().length > 0) {

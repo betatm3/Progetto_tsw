@@ -148,8 +148,8 @@ h1 {
   font-weight: 600;
 }
 
-/* Bottone Dettagli */
-.btn-dettaglio {
+/* Bottone Occhiale */
+.btn-occhiale {
   background: var(--ink);
   color: var(--paper);
   text-align: center;
@@ -163,7 +163,7 @@ h1 {
   box-shadow: 0 4px 12px rgba(43, 43, 43, 0.15);
 }
 
-.btn-dettaglio:hover {
+.btn-occhiale:hover {
   transform: translateY(-2px);
   background: var(--amber);
   color: var(--ink);

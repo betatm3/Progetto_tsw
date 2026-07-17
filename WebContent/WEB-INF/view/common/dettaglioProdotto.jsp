@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dettaglio Prodotto - GG Eyewear</title>
+    <title>Occhiale - GG Eyewear</title>
     
     <!-- Font Premium da Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/comune.css">
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/dettaglioProdotto.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/occhiale.css">
 </head>
 <body>
 <%@ include file="../partials/header.jsp" %>
@@ -224,8 +224,8 @@
             } else { 
         %>
             <div style="text-align: center; padding: 40px 0;">
-                <h2 style="color: var(--danger-color); margin-bottom: 20px;">Dettaglio Prodotto Non Trovato</h2>
-                <p style="color: var(--text-secondary); margin-bottom: 30px;">Il prodotto richiesto non esiste o non è attualmente disponibile.</p>
+                <h2 style="color: var(--danger-color); margin-bottom: 20px;">Prodotto Non Trovato</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 30px;">L'occhiale richiesto non esiste o non è attualmente disponibile.</p>
                 <a href="catalogo" class="btn-back" style="margin-bottom: 0;">Torna al Catalogo</a>
             </div>
         <% 
