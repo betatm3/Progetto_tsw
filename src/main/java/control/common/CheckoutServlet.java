@@ -37,11 +37,8 @@ public class CheckoutServlet extends HttpServlet {
         
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("utenteLoggato") == null) {
-            // L'utente non è loggato, reindirizza al login con messaggio
-            request.setAttribute("errore", "Devi effettuare il login prima di accedere al checkout.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/common/login.jsp");
-            dispatcher.forward(request, response);
-            return;
+            // L'utente non è loggato, reindirizza al login
+            response.sendRedirect(request.getContextPath() + "/login?errore=auth_required");
         }
 
         @SuppressWarnings("unchecked")

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -58,8 +59,8 @@ public class DashboardAdminServlet extends HttpServlet {
             request.setAttribute("totaleUtenti", totaleUtenti);
             request.setAttribute("totaleProdotti", totaleProdotti);
 
-            // Inoltra alla pagina JSP
-            request.getRequestDispatcher("/WEB-INF/view/admin/dashboard.jsp").forward(request, response);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/admin/dashboard.jsp");
+            dispatcher.forward(request, response);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -78,7 +79,8 @@ public class DashboardAdminServlet extends HttpServlet {
         
         if (utente == null || !utente.isAdmin()) {
             request.setAttribute("messaggioErrore", "Accesso negato: area riservata agli amministratori.");
-            request.getRequestDispatcher("/WEB-INF/view/errors/errorePermessi.jsp").forward(request, response);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/errors/errorePermessi.jsp");
+            dispatcher.forward(request, response);
             return false;
         }
         return true;

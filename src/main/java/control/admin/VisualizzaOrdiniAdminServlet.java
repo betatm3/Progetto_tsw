@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.ArrayList;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -97,7 +98,8 @@ public class VisualizzaOrdiniAdminServlet extends HttpServlet {
             }
                     
             request.setAttribute("listaOrdini", ordiniFiltrati);
-            request.getRequestDispatcher("/WEB-INF/view/admin/visualizzaOrdiniAdmin.jsp").forward(request, response);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/admin/visualizzaOrdini.jsp");
+            dispatcher.forward(request, response);
 
         } catch (SQLException | NumberFormatException | java.time.format.DateTimeParseException e) {
             e.printStackTrace();
@@ -115,7 +117,8 @@ public class VisualizzaOrdiniAdminServlet extends HttpServlet {
         
         if (utente == null || !utente.isAdmin()) {
             request.setAttribute("messaggioErrore", "Accesso negato: area riservata agli amministratori.");
-            request.getRequestDispatcher("/WEB-INF/view/errors/errorePermessi.jsp").forward(request, response);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/errors/errorePermessi.jsp");
+            dispatcher.forward(request, response);
             return false;
         }
         return true;

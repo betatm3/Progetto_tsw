@@ -25,6 +25,10 @@ public class LoginServlet extends HttpServlet {
     // Il GET mostra semplicemente la pagina JSP con il form di login
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
+    	String erroreParam = request.getParameter("errore");
+    	if ("auth_required".equals(erroreParam)) {
+    	    request.setAttribute("errore", "Devi effettuare il login prima di accedere al checkout.");
+    	}
     	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/common/login.jsp");
     	dispatcher.forward(request, response);
     }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.sql.DataSource;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -114,7 +115,8 @@ public class CarrelloServlet extends HttpServlet {
         }
         
         // 4. Inoltro alla pagina JSP per la visualizzazione grafica
-        request.getRequestDispatcher("/WEB-INF/view/common/carrello.jsp").forward(request, response);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/common/carrello.jsp");
+        dispatcher.forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
@@ -143,7 +145,7 @@ public class CarrelloServlet extends HttpServlet {
         }
         
         if (giaEsistente == null) {
-            // Se è un prodotto nuovo, creiamo l'oggetto (lasciando 'numero' a 0 come da tua logica)
+            // Se è un prodotto nuovo, creiamo l'oggetto
             ProdottoAcquistato nuovo = new ProdottoAcquistato();
             nuovo.setNumero(0); // Campo ignorato per ora, verrà valorizzato nel Checkout
             OcchialeDAOImpl o = new OcchialeDAOImpl(ds);

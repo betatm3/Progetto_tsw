@@ -2,6 +2,8 @@ package control.admin;
 
 import java.io.IOException;
 import java.sql.SQLException;
+
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -44,7 +46,8 @@ public class GestioneProdottiAdminServlet extends HttpServlet {
             }
             
             // Default: mostra la pagina di gestione
-            request.getRequestDispatcher("/WEB-INF/view/admin/gestioneProdotti.jsp").forward(request, response);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/admin/gestioneProdotti.jsp");
+            dispatcher.forward(request, response);
             
         } catch (SQLException e) {
             e.printStackTrace();
@@ -95,7 +98,8 @@ public class GestioneProdottiAdminServlet extends HttpServlet {
         
         if (utente == null || !utente.isAdmin()) {
             request.setAttribute("messaggioErrore", "Accesso negato: area riservata agli amministratori.");
-            request.getRequestDispatcher("/WEB-INF/view/errors/errorePermessi.jsp").forward(request, response);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/errors/errorePermessi.jsp");
+            dispatcher.forward(request, response);
             return false;
         }
         return true;

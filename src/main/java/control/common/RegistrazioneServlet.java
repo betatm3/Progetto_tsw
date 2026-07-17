@@ -2,6 +2,8 @@ package control.common;
 
 import java.io.IOException;
 import java.sql.SQLException;
+
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -24,7 +26,8 @@ public class RegistrazioneServlet extends HttpServlet {
     // Il GET mostra semplicemente la pagina JSP con il form di registrazione vuoto
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/view/common/registrazione.jsp").forward(request, response);
+    	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/common/registrazione.jsp");
+    	dispatcher.forward(request, response);
     }
 
     // Il POST elabora i dati inviati dall'utente per creare l'account
@@ -51,8 +54,9 @@ public class RegistrazioneServlet extends HttpServlet {
             telefono == null || telefono.trim().isEmpty()){
         	
             request.setAttribute("errore", "Tutti i campi sono obbligatori.");
-            request.getRequestDispatcher("/WEB-INF/view/common/registrazione.jsp").forward(request, response);
-            return;
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/common/registrazione.jsp");
+        	dispatcher.forward(request, response);
+        	return;
         }
 
         // Conversione e validazione della data di nascita
@@ -61,15 +65,17 @@ public class RegistrazioneServlet extends HttpServlet {
             dataNascita = java.time.LocalDate.parse(dataNascitaStr);
         } catch (java.time.format.DateTimeParseException e) {
             request.setAttribute("errore", "Formato della data di nascita non valido.");
-            request.getRequestDispatcher("/WEB-INF/view/common/registrazione.jsp").forward(request, response);
-            return;
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/common/registrazione.jsp");
+        	dispatcher.forward(request, response);
+        	return;
         }
         
         // Controllo corrispondenza password
         if (!password.equals(confermaPassword)) {
             request.setAttribute("errore", "Le password inserite non corrispondono.");
-            request.getRequestDispatcher("/WEB-INF/view/common/registrazione.jsp").forward(request, response);
-            return;
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/common/registrazione.jsp");
+        	dispatcher.forward(request, response);
+        	return;
         }
 
         UtenteDAOImpl utenteDAO = new UtenteDAOImpl(ds);
@@ -78,8 +84,9 @@ public class RegistrazioneServlet extends HttpServlet {
             // 4. Controllo Unicità dell'Email: non possono esserci due utenti con la stessa email
             if (utenteDAO.doRetrieveByKey(email) != null) {
                 request.setAttribute("errore", "Questa email è già associata a un account esistente.");
-                request.getRequestDispatcher("/WEB-INF/view/common/registrazione.jsp").forward(request, response);
-                return;
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/common/registrazione.jsp");
+            	dispatcher.forward(request, response);
+            	return;
             }
 
             // 5. Creazione del Model (Modello Utente)
@@ -108,8 +115,8 @@ public class RegistrazioneServlet extends HttpServlet {
                 HttpSession session = request.getSession(true);
                 session.setAttribute("utenteLoggato", utenteLoggato);
 
-                // Reindirizziamo alla home o al catalogo
-                response.sendRedirect(request.getContextPath() + "/catalogo");
+                // Reindirizziamo alla home
+                response.sendRedirect(request.getContextPath() + "/home");
                 return;
             } else {
                 request.setAttribute("errore", "Errore durante la registrazione. Riprova.");
@@ -121,6 +128,7 @@ public class RegistrazioneServlet extends HttpServlet {
         }
 
         // Se qualcosa è andato storto, ricarichiamo la pagina di registrazione mostrando l'errore
-        request.getRequestDispatcher("/WEB-INF/view/common/registrazione.jsp").forward(request, response);
-    }
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/common/registrazione.jsp");
+    	dispatcher.forward(request, response);
+    	}
 }
