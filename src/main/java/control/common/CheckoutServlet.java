@@ -39,6 +39,7 @@ public class CheckoutServlet extends HttpServlet {
         if (session == null || session.getAttribute("utenteLoggato") == null) {
             // L'utente non è loggato, reindirizza al login
             response.sendRedirect(request.getContextPath() + "/login?errore=auth_required");
+            return;
         }
 
         @SuppressWarnings("unchecked")
@@ -57,7 +58,7 @@ public class CheckoutServlet extends HttpServlet {
         
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("utenteLoggato") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect(request.getContextPath() + "/login?errore=auth_required");
             return;
         }
 
