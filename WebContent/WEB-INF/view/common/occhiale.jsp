@@ -24,15 +24,6 @@
 <body>
 <%@ include file="../partials/header.jsp" %>
     <div class="container product-detail-container">
-        
-        <!-- Bottone Indietro -->
-        <a href="catalogo" class="btn-back">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="19" y1="12" x2="5" y2="12"></line>
-                <polyline points="12 19 5 12 12 5"></polyline>
-            </svg>
-            Torna al Catalogo
-        </a>
 
         <% 
             Occhiale occhiale = (Occhiale) request.getAttribute("prodotto");
@@ -328,7 +319,7 @@
             <div style="text-align: center; padding: 60px 0;">
                 <h2 style="color: var(--rust); margin-bottom: 20px;">Prodotto Non Trovato</h2>
                 <p style="color: rgba(43, 43, 43, 0.6); margin-bottom: 30px;">L'occhiale richiesto non esiste o non è disponibile.</p>
-                <a href="catalogo" class="btn-back">Torna al Catalogo</a>
+                <a href="catalogo" class="btn-main-action" style="display: inline-block; width: auto; padding: 12px 24px;">Vai al Catalogo</a>
             </div>
         <% 
             } 

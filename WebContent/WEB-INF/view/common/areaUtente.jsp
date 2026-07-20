@@ -26,15 +26,7 @@
     <div class="container">
         
         <!-- Header Action Bar -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <a href="${pageContext.request.contextPath}/home" class="btn-back" style="margin-bottom: 0;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="19" y1="12" x2="5" y2="12"></line>
-                    <polyline points="12 19 5 12 12 5"></polyline>
-                </svg>
-                Torna alla Home
-            </a>
-
+        <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 20px;">
             <% 
                 Utente utenteCheckAdmin = (Utente) session.getAttribute("utenteLoggato");
                 if (utenteCheckAdmin != null && utenteCheckAdmin.getRuolo() != null && "AMMINISTRATORE".equalsIgnoreCase(utenteCheckAdmin.getRuolo().name())) { 
@@ -114,12 +106,14 @@
                     </div>
                 </div>
 
-                <% if (utente.getRuolo() != null && "AMMINISTRATORE".equalsIgnoreCase(utente.getRuolo().name())) { %>
-                    <a href="<%= request.getContextPath() %>/admin/dashboard" class="btn-admin-dashboard">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; margin-right: 8px;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                        Pannello Amministratore
-                    </a>
-                <% } %>
+                <a href="<%= request.getContextPath() %>/logout" class="btn-logout">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px; margin-right: 8px;">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Esci dal Profilo
+                </a>
 
             </div>
 

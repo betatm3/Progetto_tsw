@@ -113,7 +113,7 @@
                     VersioneOcchiale versione = occhiale.getVersioneCorrente();
                     String marca = (versione != null && versione.getMarca() != null) ? versione.getMarca() : "GG";
                     String modello = (versione != null && versione.getModello() != null) ? versione.getModello() : "Eyewear #" + occhiale.getId();
-                    double mediaVoto = (medieVoti != null && medieVoti.containsKey(occhiale.getId())) ? medieVoti.get(occhiale.getId()) : 4.8;
+                    double mediaVoto = (medieVoti != null && medieVoti.containsKey(occhiale.getId())) ? medieVoti.get(occhiale.getId()) : 0.0;
                     double prezzo = versione != null ? versione.getPrezzo() : 0.0;
                     
                     int scontoPct = 20 + (occhiale.getId() * 7) % 25; // Sconto tra 20% e 44%
@@ -164,11 +164,11 @@
                                 <% } %>
                             </div>
 
-                            <div class="rating-stars" title="<%= String.format("%.1f", mediaVoto) %> su 5 stelle">
+                            <div class="rating-stars" title="<%= mediaVoto > 0 ? String.format("%.1f su 5 stelle", mediaVoto) : "Nessuna recensione" %>">
                                 <% 
                                     int interoVoto = (int) Math.round(mediaVoto);
                                     for (int s = 1; s <= 5; s++) {
-                                        if (s <= interoVoto) {
+                                        if (s <= interoVoto && interoVoto > 0) {
                                 %>
                                             <span class="star filled">★</span>
                                 <% 

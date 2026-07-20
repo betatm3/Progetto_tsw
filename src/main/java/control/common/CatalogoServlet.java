@@ -112,14 +112,13 @@ public class CatalogoServlet extends HttpServlet {
                     try {
                         Collection<Recensione> recensioni = recensioneDAO.doRetrieveByOcchiale(occhiale.getId());
                         if (recensioni != null && !recensioni.isEmpty()) {
-                            double media = recensioni.stream().mapToInt(Recensione::getVoto).average().orElse(5.0);
+                            double media = recensioni.stream().mapToInt(Recensione::getVoto).average().orElse(0.0);
                             medieVoti.put(occhiale.getId(), media);
                         } else {
-                            // Valore predefinito dimostrativo in assenza di recensioni (4.8 stelle)
-                            medieVoti.put(occhiale.getId(), 4.8);
+                            medieVoti.put(occhiale.getId(), 0.0);
                         }
                     } catch (Exception e) {
-                        medieVoti.put(occhiale.getId(), 5.0);
+                        medieVoti.put(occhiale.getId(), 0.0);
                     }
                     
                     listaOcchiali.add(occhiale);

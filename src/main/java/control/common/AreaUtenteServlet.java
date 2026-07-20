@@ -38,11 +38,9 @@ public class AreaUtenteServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
-        HttpSession session = request.getSession(false);
+    	HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("utenteLoggato") == null) {
-            request.setAttribute("errore", "Devi effettuare il login per accedere alla tua area personale.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/common/login.jsp");
-            dispatcher.forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/login?errore=auth_required");
             return;
         }
 

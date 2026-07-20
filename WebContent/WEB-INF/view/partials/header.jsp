@@ -15,6 +15,7 @@
     <a href="<%= request.getContextPath() %>/home" class="logo"><span class="mark">GG<em>.</em></span><span class="sub">Eyewear</span></a>
 
     <nav class="main-nav">
+      <a href="<%= request.getContextPath() %>/home" style="font-weight: 800;">Home</a>
       <a href="<%= request.getContextPath() %>/catalogo?tipo=sole">Occhiali da sole</a>
       <a href="<%= request.getContextPath() %>/catalogo?tipo=vista">Occhiali da vista</a>
       <a href="<%= request.getContextPath() %>/catalogo?outlet=true" class="outlet">Outlet</a>
