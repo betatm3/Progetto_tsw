@@ -14,12 +14,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import java.util.Map;
+import java.util.HashMap;
+
 import dao.OcchialeDAOImpl;
 import dao.VersioneOcchialeDAOImpl;
+import dao.RecensioneDAOImpl;
 
 import model.Occhiale;
 import model.Tipologia;
 import model.VersioneOcchiale;
+import model.Recensione;
 
 @WebServlet({"/home", ""})
 public class HomeServlet extends HttpServlet {
@@ -33,6 +38,9 @@ public class HomeServlet extends HttpServlet {
         
         OcchialeDAOImpl occhialeDAO = new OcchialeDAOImpl(ds);
         VersioneOcchialeDAOImpl versioneDAO = new VersioneOcchialeDAOImpl(ds);
+        RecensioneDAOImpl recensioneDAO = new RecensioneDAOImpl(ds);
+
+        Map<Integer, Double> medieVoti = new HashMap<>();
 
         try {
             // Recupera gli occhiali da sole attivi (massimo 4)
@@ -43,13 +51,34 @@ public class HomeServlet extends HttpServlet {
             Collection<Occhiale> vista = occhialeDAO.doRetrieveByTipologia(Tipologia.DA_VISTA);
             List<Occhiale> vistaCompleti = caricaDettagli(vista, versioneDAO, 4);
 
+            // Calcola la media voti delle recensioni per ciascun occhiale
+            List<Occhiale> tuttiProdotti = new ArrayList<>();
+            tuttiProdotti.addAll(soleCompleti);
+            tuttiProdotti.addAll(vistaCompleti);
+
+            for (Occhiale o : tuttiProdotti) {
+                try {
+                    Collection<Recensione> recensioni = recensioneDAO.doRetrieveByOcchiale(o.getId());
+                    if (recensioni != null && !recensioni.isEmpty()) {
+                        double media = recensioni.stream().mapToInt(Recensione::getVoto).average().orElse(0.0);
+                        medieVoti.put(o.getId(), media);
+                    } else {
+                        medieVoti.put(o.getId(), 0.0);
+                    }
+                } catch (Exception e) {
+                    medieVoti.put(o.getId(), 0.0);
+                }
+            }
+
             request.setAttribute("sole", soleCompleti);
             request.setAttribute("vista", vistaCompleti);
+            request.setAttribute("medieVoti", medieVoti);
 
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("sole", new ArrayList<Occhiale>());
             request.setAttribute("vista", new ArrayList<Occhiale>());
+            request.setAttribute("medieVoti", new HashMap<Integer, Double>());
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/common/home.jsp");

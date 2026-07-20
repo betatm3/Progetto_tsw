@@ -23,10 +23,7 @@
 <div class="container">
     <!-- Torna alla Dashboard Admin -->
     <a href="${pageContext.request.contextPath}/admin/dashboard" class="btn-back">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12"></line>
-            <polyline points="12 19 5 12 12 5"></polyline>
-        </svg>
+        <img src="${pageContext.request.contextPath}/images/icons8-home-24.png" alt="Torna" style="width: 16px; height: 16px; margin-right: 6px; vertical-align: middle;" />
         Torna alla Dashboard Admin
     </a>
 
@@ -72,7 +69,7 @@
     %>
     <form action="${pageContext.request.contextPath}/admin/VisualizzaOrdini" method="GET" class="filters-section">
         <div class="filters-title">
-            <svg viewBox="0 0 24 24"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+            <img src="${pageContext.request.contextPath}/images/icons8-filter-24.png" alt="Filtra" style="width: 18px; height: 18px; vertical-align: middle; margin-right: 6px;" />
             Filtra gli Ordini
         </div>
         <div class="filters-grid">

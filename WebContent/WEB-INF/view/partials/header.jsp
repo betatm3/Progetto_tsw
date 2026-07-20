@@ -10,12 +10,55 @@
       }
   }
 %>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+  header.site-header {
+    background: #FFFFFF !important;
+    font-family: 'Outfit', sans-serif !important;
+  }
+  
+  header.site-header .header-inner {
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 0 32px !important;
+    height: 84px !important;
+  }
+  
+  header.site-header nav.main-nav {
+    display: flex !important;
+    gap: 36px !important;
+    align-items: center !important;
+    height: 100% !important;
+  }
+  
+  header.site-header nav.main-nav a {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    color: #2B2B2B !important;
+    text-decoration: none !important;
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+  }
+
+  header.site-header nav.main-nav a.outlet {
+    color: #C86A55 !important;
+  }
+
+  header.site-header nav.main-nav a.nav-home {
+    font-weight: 600 !important;
+  }
+</style>
 <header class="site-header">
   <div class="header-inner">
     <a href="<%= request.getContextPath() %>/home" class="logo"><span class="mark">GG<em>.</em></span><span class="sub">Eyewear</span></a>
 
     <nav class="main-nav">
-      <a href="<%= request.getContextPath() %>/home" style="font-weight: 800;">Home</a>
+      <a href="<%= request.getContextPath() %>/home" class="nav-home">Home</a>
       <a href="<%= request.getContextPath() %>/catalogo?tipo=sole">Occhiali da sole</a>
       <a href="<%= request.getContextPath() %>/catalogo?tipo=vista">Occhiali da vista</a>
       <a href="<%= request.getContextPath() %>/catalogo?outlet=true" class="outlet">Outlet</a>
@@ -23,10 +66,10 @@
 
     <div class="header-actions">
       <a href="<%= request.getContextPath() %>/area-utente" class="icon-btn" aria-label="Area utente">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+        <img src="<%= request.getContextPath() %>/images/icons8-user-24.png" alt="Area Utente" style="width: 20px; height: 20px; object-fit: contain;" />
       </a>
       <a href="<%= request.getContextPath() %>/carrello" class="icon-btn" aria-label="Carrello">
-        <svg viewBox="0 0 24 24"><path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9.5" cy="20.5" r="1.2" fill="var(--ink)" stroke="none"/><circle cx="17.5" cy="20.5" r="1.2" fill="var(--ink)" stroke="none"/></svg>
+        <img src="<%= request.getContextPath() %>/images/icons8-cart-24.png" alt="Carrello" style="width: 20px; height: 20px; object-fit: contain;" />
         <% if (cartCountHeader > 0) { %>
           <span class="cart-count" id="headerCartCount"><%= cartCountHeader %></span>
         <% } %>

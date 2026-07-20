@@ -15,10 +15,10 @@
     <!-- Font Premium da Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/comune.css">
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/catalogo.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/comune.css?v=2">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/catalogo.css?v=2">
 </head>
 <body>
 <%@ include file="../partials/header.jsp" %>
@@ -33,7 +33,7 @@
     <!-- Sezione Filtri -->
     <div class="filters-section">
         <div class="filters-title">
-            <svg viewBox="0 0 24 24"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+            <img src="${pageContext.request.contextPath}/images/icons8-filter-24.png" alt="Filtra" style="width: 18px; height: 18px; vertical-align: middle; margin-right: 6px;" />
             Filtra Catalogo
         </div>
         <form action="catalogo" method="GET">
@@ -148,9 +148,7 @@
                                 <input type="hidden" name="codiceVersioneOcchiale" value="<%= (versione != null) ? versione.getCodice() : 1 %>" />
                                 <input type="hidden" name="coloreScelto" value="<%= (occhiale.getDisponibilita() != null && !occhiale.getDisponibilita().isEmpty()) ? occhiale.getDisponibilita().iterator().next().getColore().getCodice() : "NERO" %>" />
                                 <button type="submit" class="btn-cart-icon" aria-label="Aggiungi al carrello" title="Aggiungi al carrello">
-                                    <svg viewBox="0 0 24 24">
-                                        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
-                                    </svg>
+                                    <img src="${pageContext.request.contextPath}/images/icons8-cart-24.png" alt="Carrello" style="width: 18px; height: 18px; vertical-align: middle;" />
                                 </button>
                             </form>
                         </div>

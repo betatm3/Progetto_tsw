@@ -45,9 +45,7 @@
         <!-- Azione: Gestione Prodotti -->
         <a href="${pageContext.request.contextPath}/admin/GestioneProdotti" class="action-card">
             <div class="action-icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M19 13H5v-2h14v2zM12 5L5 12h14L12 5zm0 14l7-7H5l7 7z"/>
-                </svg>
+                <img src="${pageContext.request.contextPath}/images/icons8-product-24.png" alt="Gestione Prodotti" style="width: 28px; height: 28px; object-fit: contain;" />
             </div>
             <div class="action-title">Gestione Prodotti</div>
             <div class="action-desc">Inserisci nuovi occhiali, modifica le informazioni commerciali, i prezzi e gestisci le varianti di colore a magazzino.</div>
@@ -56,9 +54,7 @@
         <!-- Azione: Gestione Ordini -->
         <a href="${pageContext.request.contextPath}/admin/VisualizzaOrdini" class="action-card">
             <div class="action-icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-                </svg>
+                <img src="${pageContext.request.contextPath}/images/icons8-order-24.png" alt="Gestione Ordini" style="width: 28px; height: 28px; object-fit: contain;" />
             </div>
             <div class="action-title">Gestione Ordini</div>
             <div class="action-desc">Visualizza gli ordini effettuati dai clienti, applica filtri avanzati e aggiorna lo stato degli ordini in tempo reale.</div>
@@ -67,9 +63,7 @@
         <!-- Azione: Torna al Negozio -->
         <a href="${pageContext.request.contextPath}/home" class="action-card">
             <div class="action-icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-                </svg>
+                <img src="${pageContext.request.contextPath}/images/icons8-home-24.png" alt="Torna al Negozio" style="width: 28px; height: 28px; object-fit: contain;" />
             </div>
             <div class="action-title">Torna al Negozio</div>
             <div class="action-desc">Esci dall'area di amministrazione e torna alla home page pubblica dell'e-commerce per verificare i cambiamenti.</div>

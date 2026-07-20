@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Collection" %>
+<%@ page import="java.util.Map" %>
 <%@ page import="java.util.Base64" %>
 <%@ page import="model.Occhiale" %>
 <%@ page import="model.Disponibile" %>
@@ -12,9 +13,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GG Eyewear — Occhiali</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/comune.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/home.css">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/comune.css?v=2">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/home.css?v=2">
 </head>
 <body>
 
@@ -30,6 +31,7 @@
   
   Collection<Occhiale> soleList = (Collection<Occhiale>) request.getAttribute("sole");
   Collection<Occhiale> vistaList = (Collection<Occhiale>) request.getAttribute("vista");
+  Map<Integer, Double> medieVoti = (Map<Integer, Double>) request.getAttribute("medieVoti");
   int totalModels = (soleList != null ? soleList.size() : 0) + (vistaList != null ? vistaList.size() : 0);
 %>
 
@@ -69,7 +71,7 @@
       <div style="position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 70px; z-index: 12; pointer-events: none;">
         <a href="${pageContext.request.contextPath}/catalogo" class="btn-primary" style="pointer-events: auto; box-shadow: 0 8px 30px rgba(0,0,0,0.18);">
           Scopri la collezione
-          <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; margin-left: 8px;"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          <img src="${pageContext.request.contextPath}/images/icons8-right-arrow-24 (1).png" alt="->" style="width: 14px; height: 14px; margin-left: 8px; vertical-align: middle;" />
         </a>
       </div>
 
@@ -107,6 +109,7 @@
                         nomeProdotto = versione.getMarca() + " " + versione.getModello();
                     }
                     
+                    double mediaVoto = (medieVoti != null && medieVoti.containsKey(occhiale.getId())) ? medieVoti.get(occhiale.getId()) : 0.0;
                     double prezzoDouble = (versione != null) ? versione.getPrezzo() : 0.0;
                     String prezzoStr = "";
                     if (prezzoDouble > 0) {
@@ -136,7 +139,25 @@
                       </div>
                       <div class="product-info">
                         <div class="product-name"><%= nomeProdotto %></div>
-                        <div class="product-price"><%= prezzoStr %></div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px;">
+                          <div class="product-price"><%= prezzoStr %></div>
+                          <div class="rating-stars" style="font-size: 12px; color: #f59e0b;" title="<%= mediaVoto > 0 ? String.format("%.1f su 5 stelle", mediaVoto) : "Nessuna recensione" %>">
+                            <% 
+                                int interoVoto = (int) Math.round(mediaVoto);
+                                for (int s = 1; s <= 5; s++) {
+                                    if (s <= interoVoto && interoVoto > 0) {
+                            %>
+                                        <span style="color: #f59e0b;">★</span>
+                            <% 
+                                    } else { 
+                            %>
+                                        <span style="color: #d1d5db;">☆</span>
+                            <% 
+                                    }
+                                } 
+                            %>
+                          </div>
+                        </div>
                       </div>
                     </a>
         <% 
@@ -163,6 +184,7 @@
                         nomeProdotto = versione.getMarca() + " " + versione.getModello();
                     }
                     
+                    double mediaVoto = (medieVoti != null && medieVoti.containsKey(occhiale.getId())) ? medieVoti.get(occhiale.getId()) : 0.0;
                     double prezzoDouble = (versione != null) ? versione.getPrezzo() : 0.0;
                     String prezzoStr = "";
                     if (prezzoDouble > 0) {
@@ -192,7 +214,25 @@
                       </div>
                       <div class="product-info">
                         <div class="product-name"><%= nomeProdotto %></div>
-                        <div class="product-price"><%= prezzoStr %></div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px;">
+                          <div class="product-price"><%= prezzoStr %></div>
+                          <div class="rating-stars" style="font-size: 12px; color: #f59e0b;" title="<%= mediaVoto > 0 ? String.format("%.1f su 5 stelle", mediaVoto) : "Nessuna recensione" %>">
+                            <% 
+                                int interoVoto = (int) Math.round(mediaVoto);
+                                for (int s = 1; s <= 5; s++) {
+                                    if (s <= interoVoto && interoVoto > 0) {
+                            %>
+                                        <span style="color: #f59e0b;">★</span>
+                            <% 
+                                    } else { 
+                            %>
+                                        <span style="color: #d1d5db;">☆</span>
+                            <% 
+                                    }
+                                } 
+                            %>
+                          </div>
+                        </div>
                       </div>
                     </a>
         <% 
@@ -216,7 +256,6 @@
     const slides = document.querySelectorAll(".hero-slide");
     const dots = document.querySelectorAll(".slider-dot");
     let currentSlide = 0;
-    let slideInterval = setInterval(nextSlide, 4000);
 
     function showSlide(index) {
       slides[currentSlide].classList.remove("active");
@@ -226,15 +265,9 @@
       dots[currentSlide].classList.add("active");
     }
 
-    function nextSlide() {
-      showSlide(currentSlide + 1);
-    }
-
     dots.forEach((dot, index) => {
       dot.addEventListener("click", () => {
-        clearInterval(slideInterval);
         showSlide(index);
-        slideInterval = setInterval(nextSlide, 4000);
       });
     });
   });
