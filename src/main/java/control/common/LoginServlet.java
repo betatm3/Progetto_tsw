@@ -27,7 +27,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
     	String erroreParam = request.getParameter("errore");
     	if ("auth_required".equals(erroreParam)) {
-    	    request.setAttribute("errore", "Devi effettuare il login prima di accedere al checkout.");
+    	    request.setAttribute("errore", "Devi effettuare il login prima di effettuare altre azioni.");
     	}
     	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/common/login.jsp");
     	dispatcher.forward(request, response);
