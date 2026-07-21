@@ -2,6 +2,6 @@
 <footer>
   <div class="footer-inner">
     <p>&copy; 2026 GG Eyewear. Tutti i diritti riservati.</p>
-    <p>P.IVA 01234567890 — Privacy Policy — Termini di Servizio</p>
+    <p>Privacy Policy — Termini di Servizio</p>
   </div>
 </footer>

@@ -339,34 +339,32 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
     public Collection<VersioneOcchiale> doRetrieveByFiltri(Genere genere, String materiale, String forma, String marca, String colore, String taglia, Double prezzoMin, Double prezzoMax) throws SQLException {
         Collection<VersioneOcchiale> lista = new ArrayList<>();
         
-        // 1. Convertiamo il nome del colore nel suo ID tramite il ColoreDAO se è stato passato
+        // Convertiamo il nome del colore nel suo ID tramite il ColoreDAO se è stato passato
         String codiceColore = null;
         if (colore != null && !colore.trim().isEmpty()) {
             ColoreDAOImpl coloreDAO = new ColoreDAOImpl(ds);
             Colore c = coloreDAO.doRetrieveByNome(colore);
+            
             if (c != null) {
             	codiceColore = c.getCodice(); 
-            } else { //NON ARRIVERA' MAI QUI, DA CAPIRE SE TOGLIERE
-                // Se l'utente ha cercato un colore che non esiste nel DB, 
-                // restituiamo direttamente una lista vuota senza interrogare il database inutilmente
+            } else {
+                // Se il colore cercato non esiste, restituiamo la lista vuota
                 return lista; 
             }
         }
         
         StringBuilder sql = new StringBuilder(
-            "SELECT DISTINCT v.*, o.id AS o_id, o.attivo AS o_attivo, o.immagine AS o_immagine, o.tipologia AS o_tipologia FROM versione_occhiale v " +
+            "SELECT DISTINCT v.*, o.id AS o_id, o.attivo AS o_attivo, o.tipologia AS o_tipologia FROM versione_occhiale v " +
             "JOIN occhiale o ON v.occhiale_id = o.id "
         );
         
-        // Se dobbiamo filtrare per colore, aggiungiamo la JOIN con la tabella disponibilità
+        // Per filtrare per colore, aggiungiamo la JOIN con la tabella disponibilità
         if (codiceColore != null) {
             sql.append("JOIN disponibilita d ON o.id = d.occhiale_id ");
         }
         
-        // Clausola WHERE iniziale obbligatoria per le versioni correnti e prodotti attivi
         sql.append("WHERE o.attivo = true AND v.corrente = true");
         
-        // 3. Aggiunta dinamica dei filtri condizionali
         if (genere != null) {
             sql.append(" AND v.genere = ?");
         }
@@ -392,10 +390,8 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
             sql.append(" AND v.prezzo <= ?");
         }
         
-        // 4. Impostazione dei parametri nel PreparedStatement nello STESSO IDENTICO ORDINE
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql.toString())) {
-            
             int index = 1;
             
             if (genere != null) {
@@ -423,13 +419,13 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
                 ps.setDouble(index++, prezzoMax);
             }
             
-            // 5. Esecuzione e mappatura dei risultati
             ResultSet rs = ps.executeQuery();
+            OcchialeDAOImpl occhialeDAO = new OcchialeDAOImpl(ds);
             
-                       while (rs.next()) {
+            while (rs.next()) {
                 VersioneOcchiale versione = new VersioneOcchiale();
                 
-                // 1. Settiamo tutti gli attributi di VersioneOcchiale
+                // Settiamo tutti gli attributi di VersioneOcchiale
                 versione.setCodice(rs.getInt("codice"));
                 versione.setTaglia(rs.getString("taglia"));
                 versione.setForma(rs.getString("forma"));
@@ -449,18 +445,19 @@ public class VersioneOcchialeDAOImpl implements VersioneOcchialeDAO {
                     versione.setMontatura(Montatura.valueOf(montaturaStr));
                 }
 
-                // 2. Mappiamo l'oggetto Occhiale direttamente dai campi della JOIN
+                // Mappiamo l'oggetto Occhiale
                 Occhiale occhialeAssociato = new Occhiale();
                 occhialeAssociato.setId(rs.getInt("o_id")); 
                 occhialeAssociato.setAttivo(rs.getBoolean("o_attivo"));
-                occhialeAssociato.setImmagine(rs.getBytes("o_immagine"));
+                
                 String tipologiaStr = rs.getString("o_tipologia");
                 if (tipologiaStr != null) {
                     occhialeAssociato.setTipo(Tipologia.valueOf(tipologiaStr));
                 }
-                // 3. Colleghiamo l'oggetto Occhiale appena creato all'interno della versione
-                versione.setOcchiale(occhialeAssociato);
 
+                occhialeAssociato.setImmagini(occhialeDAO.getImmaginiByOcchialeId(occhialeAssociato.getId()));
+
+                versione.setOcchiale(occhialeAssociato);
                 lista.add(versione);
             }
         }

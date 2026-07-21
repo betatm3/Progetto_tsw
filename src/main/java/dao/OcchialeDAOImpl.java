@@ -21,40 +21,63 @@ public class OcchialeDAOImpl implements OcchialeDAO {
 
     @Override
     public int doSave(Occhiale occhiale) throws SQLException {
-        String insertSQL = "INSERT INTO " + TABLE_NAME + " (attivo, immagine, tipologia) VALUES (?, ?, ?)";
+        String insertSQL = "INSERT INTO " + TABLE_NAME + " (attivo, tipologia) VALUES (?, ?)";
         
-        try (Connection connection = ds.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL, java.sql.Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = ds.getConnection()) {
+            connection.setAutoCommit(false); 
             
-            preparedStatement.setBoolean(1, occhiale.isAttivo());
-            preparedStatement.setBytes(2, occhiale.getImmagine());
-            preparedStatement.setString(3, occhiale.getTipo() != null ? occhiale.getTipo().name() : null);
-            
-            preparedStatement.executeUpdate();
-            
-            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    return generatedKeys.getInt(1);
-                } else {
-                    throw new SQLException("Inserimento fallito, nessun ID generato dal database.");
+            try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL, java.sql.Statement.RETURN_GENERATED_KEYS)) {
+                preparedStatement.setBoolean(1, occhiale.isAttivo());
+                preparedStatement.setString(2, occhiale.getTipo() != null ? occhiale.getTipo().name() : null);
+              
+                preparedStatement.executeUpdate();
+                
+                int generatedId = -1;
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        generatedId = generatedKeys.getInt(1);
+                        occhiale.setId(generatedId);
+                    } else {
+                        throw new SQLException("Inserimento fallito, nessun ID generato dal database.");
+                    }
                 }
+
+                salvaImmagini(occhiale.getImmagini(), generatedId, connection);
+
+                connection.commit(); 
+                return generatedId;
+                
+            } catch (SQLException e) {
+                connection.rollback(); 
+                throw e;
             }
         }
     }
 
     @Override
-    public boolean doUpdate(Occhiale occhiale) throws SQLException {
-        String updateSQL = "UPDATE " + TABLE_NAME + " SET attivo = ?, immagine = ?, tipologia = ? WHERE id = ?";
+    public boolean doUpdate(Occhiale occhiale) throws SQLException {   
+        String updateSQL = "UPDATE " + TABLE_NAME + " SET attivo = ?, tipologia = ? WHERE id = ?";
         int result = 0;
-        try (Connection connection = ds.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
+        
+        try (Connection connection = ds.getConnection()) {
+            connection.setAutoCommit(false); // transazione necessaria per salvare tutto o niente (atomicità)
             
-            preparedStatement.setBoolean(1, occhiale.isAttivo());
-            preparedStatement.setBytes(2, occhiale.getImmagine());
-            preparedStatement.setString(3, occhiale.getTipo() != null ? occhiale.getTipo().name() : null);
-            preparedStatement.setInt(4, occhiale.getId());
+            try (PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
+                preparedStatement.setBoolean(1, occhiale.isAttivo());
+                preparedStatement.setString(2, occhiale.getTipo() != null ? occhiale.getTipo().name() : null);
+                preparedStatement.setInt(3, occhiale.getId());
 
-            result = preparedStatement.executeUpdate();
+                result = preparedStatement.executeUpdate();
+
+                eliminaImmagini(occhiale.getId(), connection);
+                salvaImmagini(occhiale.getImmagini(), occhiale.getId(), connection);
+
+                connection.commit(); // Conferma transazione
+                
+            } catch (SQLException e) {
+                connection.rollback(); // Annulla tutto in caso di errore
+                throw e;
+            }
         }
         return (result != 0);
     }
@@ -169,13 +192,58 @@ public class OcchialeDAOImpl implements OcchialeDAO {
         Occhiale occhiale = new Occhiale();
         occhiale.setId(rs.getInt("id"));
         occhiale.setAttivo(rs.getBoolean("attivo"));
-        occhiale.setImmagine(rs.getBytes("immagine"));
         
         String tipologiaStr = rs.getString("tipologia");
         if (tipologiaStr != null) {
             occhiale.setTipo(Tipologia.valueOf(tipologiaStr));
         }
         
+        occhiale.setImmagini(getImmaginiByOcchialeId(rs.getInt("id")));
+        
         return occhiale;
     }
+    
+    public ArrayList<String> getImmaginiByOcchialeId(int idOcchiale) throws SQLException {
+        ArrayList<String> immagini = new ArrayList<>();
+        String sql = "SELECT url FROM Immagine WHERE id_occhiale = ?"; 
+        
+        try (PreparedStatement ps = ds.getConnection().prepareStatement(sql)) {
+            ps.setInt(1, idOcchiale);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    immagini.add(rs.getString("url"));
+                }
+            }
+        }
+        return immagini;
+    }
+    
+    private void salvaImmagini(ArrayList<String> immagini, int idOcchiale, Connection connection) throws SQLException {
+        if (immagini == null || immagini.isEmpty()) {
+            return;
+        }
+        
+        String insertImgSQL = "INSERT INTO Immagine (url, id_occhiale) VALUES (?, ?)";
+        
+        try (PreparedStatement ps = connection.prepareStatement(insertImgSQL)) {
+            for (String path : immagini) {
+                if (path != null && !path.trim().isEmpty()) {
+                    ps.setString(1, path);
+                    ps.setInt(2, idOcchiale);
+                    ps.addBatch(); // crea un pacchetto unico, anziché eseguire una query per ogni immagine
+                }
+            }
+            ps.executeBatch();  // invia tutto in una sola volta
+        }
+    }
+
+    private void eliminaImmagini(int idOcchiale, Connection connection) throws SQLException {
+        String deleteImgSQL = "DELETE FROM Immagine WHERE id_occhiale = ?";
+        
+        try (PreparedStatement ps = connection.prepareStatement(deleteImgSQL)) {
+            ps.setInt(1, idOcchiale);
+            ps.executeUpdate();
+        }
+    }
+    
 }

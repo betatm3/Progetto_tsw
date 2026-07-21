@@ -7,17 +7,17 @@ public class Occhiale implements Cloneable{
 	private int id;
 	private boolean attivo;
 	private Tipologia tipo;
-	private byte[] immagine; // <-- NUOVO ATTRIBUTO PER IL BLOB
+	private ArrayList<String> immagini;
 	private VersioneOcchiale versioneCorrente; 
 	private Collection<Disponibile> disponibilita; 
 
 	
-   	public Occhiale(int id, boolean attivo, Tipologia tipo, byte[] immagine, VersioneOcchiale versioneCorrente,
+   	public Occhiale(int id, boolean attivo, Tipologia tipo, ArrayList<String> immagini, VersioneOcchiale versioneCorrente,
 			Collection<Disponibile> disponibilita) {
 		this.id = id;
 		this.attivo = attivo;
 		this.tipo = tipo;
-		this.immagine = immagine;
+		this.immagini = immagini;
 		this.versioneCorrente = versioneCorrente.clone();
 		this.disponibilita = disponibilita;
 	}
@@ -38,14 +38,30 @@ public class Occhiale implements Cloneable{
 		this.attivo = attivo;
 	}
 	
-    public byte[] getImmagine() {
-        return immagine != null ? immagine.clone() : null;
+    public String getImmagine(int i) {
+    	if (immagini != null && i >= 0 && i < immagini.size()) {
+            return immagini.get(i);
+        }
+        return null;
     }
 
-    public void setImmagine(byte[] immagine) {
-        this.immagine = immagine != null ? immagine.clone() : null;
+    public void addImmagine(String img) {
+    	if (this.immagini == null) {
+            this.immagini = new ArrayList<>();
+        }
+        if (img != null && !img.trim().isEmpty()) {
+            this.immagini.add(img);
+        }
+    }
+    
+    public ArrayList<String> getImmagini(){
+    	return this.immagini;
     }
 
+    public void setImmagini(ArrayList<String> immagini) {
+    	this.immagini = immagini;
+    }
+    
     public Tipologia getTipo() {
 		return tipo;
 	}
@@ -103,9 +119,10 @@ public class Occhiale implements Cloneable{
     public Occhiale clone(){
     	try {
             Occhiale cloned = (Occhiale) super.clone();
-            if (this.immagine != null) {
-                cloned.immagine = this.immagine.clone();
+            if (this.immagini != null) {
+                cloned.immagini = new ArrayList<>(this.immagini);
             }
+
             if (this.versioneCorrente != null) {
                 cloned.versioneCorrente = this.versioneCorrente.clone();
             }
@@ -129,7 +146,7 @@ public class Occhiale implements Cloneable{
 
 	@Override
 	public String toString() {
-		return getClass().getName()+" [id=" + id + ", attivo=" + attivo + ", tipo= "+tipo+ "versioneCorrente= "+versioneCorrente+", disponibilita=" + disponibilita+ "]";
+		return getClass().getName()+" [id = " + id + ", attivo = " + attivo + ", tipo = "+tipo+ ",immagini = " + immagini+ ", versioneCorrente = "+versioneCorrente+", disponibilita = " + disponibilita+ "]";
 	}
 	
 }
