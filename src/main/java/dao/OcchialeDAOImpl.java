@@ -205,13 +205,14 @@ public class OcchialeDAOImpl implements OcchialeDAO {
     
     public ArrayList<String> getImmaginiByOcchialeId(int idOcchiale) throws SQLException {
         ArrayList<String> immagini = new ArrayList<>();
-        String sql = "SELECT url FROM Immagine WHERE id_occhiale = ?"; 
+        String sql = "SELECT path_Img FROM Immagine WHERE id_occhiale = ?"; 
         
-        try (PreparedStatement ps = ds.getConnection().prepareStatement(sql)) {
+        try (Connection connection = ds.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, idOcchiale);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    immagini.add(rs.getString("url"));
+                    immagini.add(rs.getString("path_Img"));
                 }
             }
         }
@@ -223,7 +224,7 @@ public class OcchialeDAOImpl implements OcchialeDAO {
             return;
         }
         
-        String insertImgSQL = "INSERT INTO Immagine (url, id_occhiale) VALUES (?, ?)";
+        String insertImgSQL = "INSERT INTO Immagine (path_Img, id_occhiale) VALUES (?, ?)";
         
         try (PreparedStatement ps = connection.prepareStatement(insertImgSQL)) {
             for (String path : immagini) {

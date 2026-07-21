@@ -152,7 +152,7 @@
 
                         
                         <div class="card-title-row">
-                            <h3 class="marca-modello"><%= modello %></h3>
+                            <h3 class="marca-modello"><%= marca %> <%= modello %></h3>
                             <form action="carrello" method="POST" style="margin:0; padding:0; display:inline;" onclick="event.stopPropagation();">
                                 <input type="hidden" name="action" value="aggiungi" />
                                 <input type="hidden" name="idOcchiale" value="<%= occhiale.getId() %>" />

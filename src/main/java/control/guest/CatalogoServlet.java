@@ -146,12 +146,14 @@ public class CatalogoServlet extends HttpServlet {
                 }
             }
             
-            // Gestione sezione Outlet con occhiali casuali e sconti
+            // Gestione sezione Outlet: seleziona esattamente 7 occhiali fissi di tipologie varie
             String isOutletStr = request.getParameter("outlet");
-            boolean isOutlet = "true".equalsIgnoreCase(isOutletStr) || (tipo == null && (isOutletStr == null || "true".equalsIgnoreCase(isOutletStr)));
+            boolean isOutlet = "true".equalsIgnoreCase(isOutletStr);
             
-            if (isOutlet && listaOcchiali instanceof java.util.List) {
-                java.util.Collections.shuffle((java.util.List<Occhiale>) listaOcchiali);
+            if (isOutlet) {
+                // Definiamo i 7 ID fissi per l'Outlet (2 Sole, 2 Vista, 1 Lettura, 1 Progressivo, 1 Fotocromatico)
+                java.util.Set<Integer> fixedOutletIds = new java.util.HashSet<>(java.util.Arrays.asList(201, 202, 221, 222, 241, 261, 281));
+                listaOcchiali.removeIf(occhiale -> !fixedOutletIds.contains(occhiale.getId()));
             }
             
             request.setAttribute("prodotti", listaOcchiali);
