@@ -198,5 +198,6 @@
         %>
     </div>
 <%@ include file="../partials/footer.jsp" %>
+<script src="${pageContext.request.contextPath}/scripts/checkout.js"></script>
 </body>
 </html>

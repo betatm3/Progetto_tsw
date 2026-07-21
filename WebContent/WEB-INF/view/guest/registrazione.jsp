@@ -88,5 +88,6 @@
         </div>
     </div>
 <%@ include file="../partials/footer.jsp" %>
+<script src="${pageContext.request.contextPath}/scripts/registrazione.js"></script>
 </body>
 </html>

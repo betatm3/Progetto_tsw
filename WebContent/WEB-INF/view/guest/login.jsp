@@ -50,5 +50,6 @@
         </div>
     </div>
 <%@ include file="../partials/footer.jsp" %>
+<script src="${pageContext.request.contextPath}/scripts/login.js"></script>
 </body>
 </html>
