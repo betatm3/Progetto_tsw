@@ -64,7 +64,7 @@
                                                     String trimmed = primaImgCart.trim();
                                                     if (trimmed.startsWith("data:") || trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
                                                         imgSrcCart = trimmed;
-                                                    } else if (trimmed.startsWith("/") || trimmed.startsWith("images/")) {
+                                                    } else if (trimmed.startsWith("/") || trimmed.startsWith("images/") || trimmed.startsWith("img/")) {
                                                         imgSrcCart = request.getContextPath() + (trimmed.startsWith("/") ? "" : "/") + trimmed;
                                                     } else {
                                                         imgSrcCart = "data:image/jpeg;base64," + trimmed;

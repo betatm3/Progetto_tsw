@@ -47,6 +47,10 @@
 
                 double prezzo = (versione != null) ? versione.getPrezzo() : 0.00;
                 String taglia = (versione != null && versione.getTaglia() != null) ? versione.getTaglia() : "M";
+                String materiale = (versione != null && versione.getMateriale() != null) ? versione.getMateriale() : "N/D";
+                String genere = (versione != null && versione.getGenere() != null) ? versione.getGenere().name() : "N/D";
+                String forma = (versione != null && versione.getForma() != null) ? versione.getForma() : "N/D";
+                String montatura = (versione != null && versione.getMontatura() != null) ? versione.getMontatura().name() : "N/D";
                 
                 ArrayList<String> listaImmagini = (occhiale != null) ? occhiale.getImmagini() : null;
                 List<String> immaginiResolute = new ArrayList<>();
@@ -56,7 +60,7 @@
                             String trimmed = path.trim();
                             if (trimmed.startsWith("data:") || trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
                                 immaginiResolute.add(trimmed);
-                            } else if (trimmed.startsWith("/") || trimmed.startsWith("images/")) {
+                            } else if (trimmed.startsWith("/") || trimmed.startsWith("images/") || trimmed.startsWith("img/")) {
                                 immaginiResolute.add(request.getContextPath() + (trimmed.startsWith("/") ? "" : "/") + trimmed);
                             } else {
                                 immaginiResolute.add("data:image/jpeg;base64," + trimmed);
@@ -136,12 +140,26 @@
                 </div>
 
                 
-                <div class="size-section">
-                    <div class="size-label-row">
-                        <span class="field-title">Taglia:</span>
+                <div class="details-grid-section" style="margin: 20px 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 16px; background: rgba(0,0,0,0.02); border-radius: 8px; border: 1px solid var(--line); font-family: 'Outfit', sans-serif;">
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #888; font-weight: 600;">Taglia</span>
+                        <span style="font-size: 14px; font-weight: 500; color: #2B2B2B;"><%= taglia %></span>
                     </div>
-                    <div class="size-badge-box">
-                        <span class="size-pill"><%= taglia %></span>
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #888; font-weight: 600;">Genere</span>
+                        <span style="font-size: 14px; font-weight: 500; color: #2B2B2B;"><%= genere %></span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #888; font-weight: 600;">Materiale</span>
+                        <span style="font-size: 14px; font-weight: 500; color: #2B2B2B;"><%= materiale %></span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #888; font-weight: 600;">Forma</span>
+                        <span style="font-size: 14px; font-weight: 500; color: #2B2B2B;"><%= forma %></span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 4px; grid-column: span 2;">
+                        <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #888; font-weight: 600;">Montatura</span>
+                        <span style="font-size: 14px; font-weight: 500; color: #2B2B2B;"><%= montatura %></span>
                     </div>
                 </div>
 
@@ -219,9 +237,6 @@
 
                 
                 <div class="trust-list">
-                    <div class="trust-item">
-                        <span>Reso e cambio entro 30 giorni</span>
-                    </div>
                     <div class="trust-item">
                         <span>1 Anno di garanzia</span>
                     </div>

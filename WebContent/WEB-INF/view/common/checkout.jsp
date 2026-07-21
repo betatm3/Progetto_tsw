@@ -155,7 +155,7 @@
                                                 String trimmed = primaImgCheck.trim();
                                                 if (trimmed.startsWith("data:") || trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
                                                     imgSrcCheck = trimmed;
-                                                } else if (trimmed.startsWith("/") || trimmed.startsWith("images/")) {
+                                                } else if (trimmed.startsWith("/") || trimmed.startsWith("images/") || trimmed.startsWith("img/")) {
                                                     imgSrcCheck = request.getContextPath() + (trimmed.startsWith("/") ? "" : "/") + trimmed;
                                                 } else {
                                                     imgSrcCheck = "data:image/jpeg;base64," + trimmed;

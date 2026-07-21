@@ -17,9 +17,6 @@
       <h4 style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #2B2B2B; margin-bottom: 4px;">Esplora</h4>
       <a href="<%= request.getContextPath() %>/catalogo?tipo=DA_SOLE" style="font-size: 13px; color: #555; text-decoration: none;">Occhiali da Sole</a>
       <a href="<%= request.getContextPath() %>/catalogo?tipo=DA_VISTA" style="font-size: 13px; color: #555; text-decoration: none;">Occhiali da Vista</a>
-      <a href="<%= request.getContextPath() %>/catalogo?tipo=DA_LETTURA" style="font-size: 13px; color: #555; text-decoration: none;">Occhiali da Lettura</a>
-      <a href="<%= request.getContextPath() %>/catalogo?tipo=PROGRESSIVO" style="font-size: 13px; color: #555; text-decoration: none;">Occhiali Progressivi</a>
-      <a href="<%= request.getContextPath() %>/catalogo?tipo=FOTOCROMATICO" style="font-size: 13px; color: #555; text-decoration: none;">Occhiali Fotocromatici</a>
       <a href="<%= request.getContextPath() %>/catalogo?outlet=true" style="font-size: 13px; color: #C86A55; text-decoration: none; font-weight: 600; margin-top: 4px;">Outlet & Offerte</a>
     </div>
 

@@ -130,15 +130,7 @@ public class CatalogoServlet extends HttpServlet {
                     targetTipo = Tipologia.DA_SOLE;
                 } else if (cleanedTipo.equals("VISTA") || cleanedTipo.equals("DA_VISTA")) {
                     targetTipo = Tipologia.DA_VISTA;
-                } else if (cleanedTipo.equals("LETTURA") || cleanedTipo.equals("DA_LETTURA")) {
-                    targetTipo = Tipologia.DA_LETTURA;
-                } 
-                else if (cleanedTipo.equals("FOTOCROMATICO")) {
-                    targetTipo = Tipologia.FOTOCROMATICO;
-                }
-                else if (cleanedTipo.equals("PROGRESSIVO")) {
-                    targetTipo = Tipologia.PROGRESSIVO;
-                }else {
+                } else {
                     try {
                         targetTipo = Tipologia.valueOf(cleanedTipo);
                     } catch (IllegalArgumentException e) {
@@ -152,13 +144,13 @@ public class CatalogoServlet extends HttpServlet {
                 }
             }
             
-            // Gestione sezione Outlet: seleziona esattamente 7 occhiali fissi di tipologie varie
+            // Gestione sezione Outlet: seleziona esattamente 7 occhiali fissi
             String isOutletStr = request.getParameter("outlet");
             boolean isOutlet = "true".equalsIgnoreCase(isOutletStr);
             
             if (isOutlet) {
-                // Definiamo i 7 ID fissi per l'Outlet (2 Sole, 2 Vista, 1 Lettura, 1 Progressivo, 1 Fotocromatico)
-                java.util.Set<Integer> fixedOutletIds = new java.util.HashSet<>(java.util.Arrays.asList(201, 202, 221, 222, 241, 261, 281));
+                // Definiamo i 7 ID fissi per l'Outlet (4 Sole, 3 Vista)
+                java.util.Set<Integer> fixedOutletIds = new java.util.HashSet<>(java.util.Arrays.asList(201, 202, 203, 204, 221, 222, 223));
                 listaOcchiali.removeIf(occhiale -> !fixedOutletIds.contains(occhiale.getId()));
             }
             

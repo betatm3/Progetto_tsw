@@ -132,7 +132,7 @@
                                     String trimmed = primaImgCat.trim();
                                     if (trimmed.startsWith("data:") || trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
                                         imgSrcCat = trimmed;
-                                    } else if (trimmed.startsWith("/") || trimmed.startsWith("images/")) {
+                                    } else if (trimmed.startsWith("/") || trimmed.startsWith("images/") || trimmed.startsWith("img/")) {
                                         imgSrcCat = request.getContextPath() + (trimmed.startsWith("/") ? "" : "/") + trimmed;
                                     } else {
                                         imgSrcCat = "data:image/jpeg;base64," + trimmed;

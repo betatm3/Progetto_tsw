@@ -128,7 +128,7 @@
                                 String trimmed = primaImgSole.trim();
                                 if (trimmed.startsWith("data:") || trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
                                     imgSrcSole = trimmed;
-                                } else if (trimmed.startsWith("/") || trimmed.startsWith("images/")) {
+                                } else if (trimmed.startsWith("/") || trimmed.startsWith("images/") || trimmed.startsWith("img/")) {
                                     imgSrcSole = request.getContextPath() + (trimmed.startsWith("/") ? "" : "/") + trimmed;
                                 } else {
                                     imgSrcSole = "data:image/jpeg;base64," + trimmed;
@@ -214,7 +214,7 @@
                                 String trimmed = primaImgVista.trim();
                                 if (trimmed.startsWith("data:") || trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
                                     imgSrcVista = trimmed;
-                                } else if (trimmed.startsWith("/") || trimmed.startsWith("images/")) {
+                                } else if (trimmed.startsWith("/") || trimmed.startsWith("images/") || trimmed.startsWith("img/")) {
                                     imgSrcVista = request.getContextPath() + (trimmed.startsWith("/") ? "" : "/") + trimmed;
                                 } else {
                                     imgSrcVista = "data:image/jpeg;base64," + trimmed;

@@ -112,14 +112,13 @@ public class GestioneProdottiAdminServlet extends HttpServlet {
         OcchialeDAOImpl occhialeDAO = new OcchialeDAOImpl(ds);
         
         if (occhialeDAO.doDeleteLogica(idOcchiale)) {
-            response.sendRedirect(request.getContextPath() + "/admin/dashboard?msg=ProdottoDisattivato");
+            response.sendRedirect(request.getContextPath() + "/admin/GestioneProdotti?msg=ProdottoDisattivato");
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Impossibile disattivare il prodotto: ID non trovato.");
         }
     }
 
     private void aggiungiNuovoProdotto(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
-        OcchialeDAOImpl occhialeDAO = new OcchialeDAOImpl(ds);
         VersioneOcchialeDAOImpl versioneDAO = new VersioneOcchialeDAOImpl(ds);
         DisponibileDAOImpl disponibileDAO = new DisponibileDAOImpl(ds); // Inizializziamo il DAO per la tabella ponte
         
@@ -134,19 +133,27 @@ public class GestioneProdottiAdminServlet extends HttpServlet {
             nuovoOcchiale.setTipo(Tipologia.DA_SOLE);
         }
         
-        jakarta.servlet.http.Part filePart = request.getPart("immagine");
-        if (filePart != null && filePart.getSize() > 0) {
-            try (java.io.InputStream inputStream = filePart.getInputStream()) {
-                byte[] immagineBytes = inputStream.readAllBytes();
-                String base64Img = java.util.Base64.getEncoder().encodeToString(immagineBytes);
-                nuovoOcchiale.addImmagine("data:image/jpeg;base64," + base64Img);
+        // 1.5 Salvataggio dell'oggetto OCCHIALE per generare l'ID nel DB
+        OcchialeDAOImpl occhialeDAO = new OcchialeDAOImpl(ds);
+        int generatedId = occhialeDAO.doSave(nuovoOcchiale);
+        nuovoOcchiale.setId(generatedId);
+
+        // Salvataggio dell'immagine caricata
+        try {
+            String pathImg = salvaImmagine(request, generatedId);
+            if (pathImg != null) {
+                nuovoOcchiale.addImmagine(pathImg);
+                occhialeDAO.doUpdate(nuovoOcchiale);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         String urlImmagine = request.getParameter("urlImmagine");
         if (urlImmagine != null && !urlImmagine.trim().isEmpty()) {
             nuovoOcchiale.addImmagine(urlImmagine.trim());
+            occhialeDAO.doUpdate(nuovoOcchiale);
         }
-
 
         // 2. Creazione e popolamento dell'oggetto VERSIONEOCCHIALE
         VersioneOcchiale primaVersione = new VersioneOcchiale();
@@ -226,16 +233,34 @@ public class GestioneProdottiAdminServlet extends HttpServlet {
                 occhialeModificato.setTipo(Tipologia.valueOf(tipologiaStr.toUpperCase().trim()));
             }
 
-            jakarta.servlet.http.Part filePart = request.getPart("immagine");
-            if (filePart != null && filePart.getSize() > 0) {
-                try (java.io.InputStream inputStream = filePart.getInputStream()) {
-                    byte[] immagineBytes = inputStream.readAllBytes();
-                    String base64Img = java.util.Base64.getEncoder().encodeToString(immagineBytes);
+            String attivoStr = request.getParameter("attivo");
+            if (attivoStr != null && !attivoStr.trim().isEmpty()) {
+                occhialeModificato.setAttivo(Boolean.parseBoolean(attivoStr));
+            }
+
+            try {
+                String pathImg = salvaImmagine(request, idOcchiale);
+                if (pathImg != null) {
+                    // Eliminazione vecchio file immagine se presente fisicamente in img/prodotti
+                    String oldPath = (occhialeModificato.getImmagini() != null && !occhialeModificato.getImmagini().isEmpty())
+                                     ? occhialeModificato.getImmagini().get(0) : null;
+                    if (oldPath != null && !oldPath.startsWith("http") && !oldPath.startsWith("data:")) {
+                        String uploadDir = getServletContext().getRealPath(java.io.File.separator + "img" + java.io.File.separator + "prodotti");
+                        String oldFileName = java.nio.file.Paths.get(oldPath).getFileName().toString();
+                        java.io.File oldFile = new java.io.File(uploadDir, oldFileName);
+                        if (oldFile.exists()) {
+                            oldFile.delete();
+                        }
+                    }
+                    
                     java.util.ArrayList<String> nuoveImmagini = new java.util.ArrayList<>();
-                    nuoveImmagini.add("data:image/jpeg;base64," + base64Img);
+                    nuoveImmagini.add(pathImg);
                     occhialeModificato.setImmagini(nuoveImmagini);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
             String urlImmagine = request.getParameter("urlImmagine");
             if (urlImmagine != null && !urlImmagine.trim().isEmpty()) {
                 if (occhialeModificato.getImmagini() == null) {
@@ -316,5 +341,32 @@ public class GestioneProdottiAdminServlet extends HttpServlet {
         }
          response.sendRedirect(request.getContextPath() + "/admin/dashboard?msg=ColoriAggiornati");
     }
-    
+
+    private String salvaImmagine(HttpServletRequest request, int idOcchiale) throws Exception {
+        String uploadDir = getServletContext().getRealPath(java.io.File.separator + "img" + java.io.File.separator + "prodotti");
+        java.io.File folder = new java.io.File(uploadDir);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
+        jakarta.servlet.http.Part part = request.getPart("immagine");
+        if (part != null && part.getSize() > 0 
+                && part.getSubmittedFileName() != null 
+                && !part.getSubmittedFileName().isBlank()) {
+
+            String nomeOriginale = java.nio.file.Paths.get(part.getSubmittedFileName()).getFileName().toString();
+
+            String estensione = "";
+            int dotIndex = nomeOriginale.lastIndexOf('.');
+            if (dotIndex > 0) {
+                estensione = nomeOriginale.substring(dotIndex);
+            }
+
+            String nomeFile = "immagine" + System.currentTimeMillis() + "_" + idOcchiale + estensione;
+            part.write(uploadDir + java.io.File.separator + nomeFile);
+
+            return "img/prodotti/" + nomeFile;
+        }
+        return null;
+    }
 }

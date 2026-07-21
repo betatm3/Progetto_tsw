@@ -109,7 +109,7 @@
                                     Occhiale occ = v.getOcchiale();
                                     boolean attivo = occ != null && occ.isAttivo();
                         %>
-                                    <tr class="prod-tr <%= attivo ? "" : "inactive" %>">
+                                    <tr class="prod-tr">
                                         <td class="prod-td">
                                             <div class="prod-img-container">
                                                  <% 
@@ -119,7 +119,7 @@
                                                         String trimmed = primaImgProd.trim();
                                                         if (trimmed.startsWith("data:") || trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
                                                             imgSrcProd = trimmed;
-                                                        } else if (trimmed.startsWith("/") || trimmed.startsWith("images/")) {
+                                                        } else if (trimmed.startsWith("/") || trimmed.startsWith("images/") || trimmed.startsWith("img/")) {
                                                             imgSrcProd = request.getContextPath() + (trimmed.startsWith("/") ? "" : "/") + trimmed;
                                                         } else {
                                                             imgSrcProd = "data:image/jpeg;base64," + trimmed;
@@ -134,7 +134,7 @@
                                             </div>
                                         </td>
                                         <td class="prod-td">
-                                            <div style="font-weight: 700; color: #ffffff;"><%= v.getMarca() %></div>
+                                            <div style="font-weight: 700; color: #000000;"><%= v.getMarca() %></div>
                                             <div style="font-size: 0.8rem; color: var(--text-secondary);"><%= v.getModello() %> (ID: <%= occ.getId() %>)</div>
                                         </td>
                                         <td class="prod-td" style="font-weight: 700;">
@@ -185,7 +185,7 @@
                     <span>✏️</span> Modifica Caratteristiche
                 </div>
                 
-                <form action="/admin/GestioneProdotti?action=updatecaratteristiche" method="POST" enctype="multipart/form-data">
+                <form action="<%= request.getContextPath() %>/admin/GestioneProdotti?action=updatecaratteristiche" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="idOcchiale" value="<%= versioneInModifica.getOcchiale().getId() %>" />
                     <input type="hidden" name="codiceVersione" value="<%= versioneInModifica.getCodice() %>" />
                     
@@ -238,6 +238,15 @@
                             <label for="edit_materiale">Materiale</label>
                             <input type="text" id="edit_materiale" name="materiale" required value="<%= versioneInModifica.getMateriale() %>" />
                         </div>
+                        <% if (!versioneInModifica.getOcchiale().isAttivo()) { %>
+                            <div class="form-group">
+                                <label for="edit_attivo">Stato Prodotto</label>
+                                <select id="edit_attivo" name="attivo">
+                                    <option value="false" selected>Disattivato</option>
+                                    <option value="true">Attiva Prodotto (Rendi visibile)</option>
+                                </select>
+                            </div>
+                        <% } %>
                         <div class="form-group full-width">
                             <label for="edit_immagine">Nuova Immagine (Lascia vuoto per non cambiare)</label>
                             <input type="file" id="edit_immagine" name="immagine" accept="image/*" />
@@ -245,7 +254,7 @@
                     </div>
                     
                     <button type="submit" class="btn-submit">Salva Modifiche</button>
-                    <a href="/admin/GestioneProdotti" class="btn-cancel">Annulla Modifica</a>
+                    <a href="<%= request.getContextPath() %>/admin/GestioneProdotti" class="btn-cancel">Annulla Modifica</a>
                 </form>
 
             <% } else if (occhialeColori != null) { %>
@@ -274,7 +283,7 @@
                                     
                                     <div class="color-update-form">
                                         
-                                        <form action="/admin/GestioneProdotti?action=updatecolori&subAction=updatequantity" method="POST" style="display: flex; gap: 6px;">
+                                        <form action="<%= request.getContextPath() %>/admin/GestioneProdotti?action=updatecolori&subAction=updatequantity" method="POST" style="display: flex; gap: 6px;">
                                             <input type="hidden" name="idOcchiale" value="<%= occhialeColori.getId() %>" />
                                             <input type="hidden" name="codiceColore" value="<%= disp.getColore().getCodice() %>" />
                                             <input type="number" name="quantita" value="<%= disp.getQuantita() %>" min="0" required />
@@ -282,7 +291,7 @@
                                         </form>
 
                                         
-                                        <a href="/admin/GestioneProdotti?action=updatecolori&subAction=removecolor&idOcchiale=<%= occhialeColori.getId() %>&codiceColore=<%= disp.getColore().getCodice() %>" 
+                                        <a href="<%= request.getContextPath() %>/admin/GestioneProdotti?action=updatecolori&subAction=removecolor&idOcchiale=<%= occhialeColori.getId() %>&codiceColore=<%= disp.getColore().getCodice() %>" 
                                            class="btn-mini delete" 
                                            onclick="return confirm('Sicuro di voler rimuovere questa variante colore? Verrà azzerato il magazzino per questa opzione.');">
                                             Rimuovi
@@ -305,7 +314,7 @@
                 <div style="border-top: 1px solid var(--glass-border); padding-top: 20px; margin-top: 20px;">
                     <div style="font-weight: 700; font-size: 1rem; margin-bottom: 15px; color: #ffffff;">Associa Nuova Variante Colore</div>
                     
-                    <form action="/admin/GestioneProdotti?action=updatecolori&subAction=addcolor" method="POST">
+                    <form action="<%= request.getContextPath() %>/admin/GestioneProdotti?action=updatecolori&subAction=addcolor" method="POST">
                         <input type="hidden" name="idOcchiale" value="<%= occhialeColori.getId() %>" />
                         
                         <div class="form-grid">
@@ -332,7 +341,7 @@
                         </div>
                         
                         <button type="submit" class="btn-submit">Associa Colore</button>
-                        <a href="/admin/GestioneProdotti" class="btn-cancel">Chiudi Pannello Colori</a>
+                        <a href="<%= request.getContextPath() %>/admin/GestioneProdotti" class="btn-cancel">Chiudi Pannello Colori</a>
                     </form>
                 </div>
 
@@ -342,7 +351,7 @@
                     <span>➕</span> Aggiungi Nuovo Occhiale
                 </div>
                 
-                <form action="/admin/GestioneProdotti?action=add" method="POST" enctype="multipart/form-data">
+                <form action="<%= request.getContextPath() %>/admin/GestioneProdotti?action=add" method="POST" enctype="multipart/form-data">
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="marca">Marca</label>
