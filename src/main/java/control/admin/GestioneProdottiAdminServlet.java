@@ -26,9 +26,9 @@ import dao.DisponibileDAOImpl;
 
 @WebServlet("/admin/GestioneProdotti")
 @jakarta.servlet.annotation.MultipartConfig(
-    fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-    maxFileSize = 1024 * 1024 * 10,      // 10MB
-    maxRequestSize = 1024 * 1024 * 50    // 50MB
+    fileSizeThreshold = 1024 * 1024 * 2, 
+    maxFileSize = 1024 * 1024 * 10,      
+    maxRequestSize = 1024 * 1024 * 50    
 )
 
 public class GestioneProdottiAdminServlet extends HttpServlet {
@@ -40,9 +40,9 @@ public class GestioneProdottiAdminServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
-        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-        response.setDateHeader("Expires", 0); // Proxies.
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); 
+        response.setHeader("Pragma", "no-cache"); 
+        response.setDateHeader("Expires", 0); 
 
         String action = request.getParameter("action");
 
