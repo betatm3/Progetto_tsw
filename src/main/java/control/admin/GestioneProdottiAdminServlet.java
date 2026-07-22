@@ -108,7 +108,7 @@ public class GestioneProdottiAdminServlet extends HttpServlet {
         VersioneOcchialeDAOImpl versioneDAO = new VersioneOcchialeDAOImpl(ds);
         DisponibileDAOImpl disponibileDAO = new DisponibileDAOImpl(ds); // Inizializziamo il DAO per la tabella ponte
         
-        // 1. Creazione e popolamento dell'oggetto OCCHIALE
+        // Creazione e popolamento dell'oggetto OCCHIALE
         Occhiale nuovoOcchiale = new Occhiale();
         nuovoOcchiale.setAttivo(true);
         
@@ -119,7 +119,7 @@ public class GestioneProdottiAdminServlet extends HttpServlet {
             nuovoOcchiale.setTipo(Tipologia.DA_SOLE);
         }
         
-        // 1.5 Salvataggio dell'oggetto OCCHIALE per generare l'ID nel DB
+        // Salvataggio dell'oggetto OCCHIALE per generare l'ID nel DB
         OcchialeDAOImpl occhialeDAO = new OcchialeDAOImpl(ds);
         int generatedId = occhialeDAO.doSave(nuovoOcchiale);
         nuovoOcchiale.setId(generatedId);
