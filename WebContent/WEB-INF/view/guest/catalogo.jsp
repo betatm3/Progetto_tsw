@@ -75,6 +75,16 @@
                     </select>
                 </div>
 
+				<div class="filter-field">
+                    <label class="filter-label" for="filterTaglia">Taglia</label>
+					<select id="filterTaglia" name="taglia" class="filter-input">
+                        <option value="">Tutti</option>
+                        <option value="L" <%= "L".equalsIgnoreCase(request.getParameter("taglia")) ? "selected" : "" %>>L</option>
+                        <option value="M" <%= "M".equalsIgnoreCase(request.getParameter("taglia")) ? "selected" : "" %>>M</option>
+                        <option value="S" <%= "S".equalsIgnoreCase(request.getParameter("taglia")) ? "selected" : "" %>>S</option>
+                    </select>                
+                </div>
+
                 <div class="filter-field">
                     <label class="filter-label" for="filterMateriale">Materiale</label>
                     <input type="text" id="filterMateriale" name="materiale" class="filter-input" placeholder="Es. Acetato, Metallo..." value="<%= request.getParameter("materiale") != null ? request.getParameter("materiale") : "" %>" />
@@ -90,10 +100,7 @@
                     <input type="text" id="filterColore" name="colore" class="filter-input" placeholder="Es. Nero, Oro..." value="<%= request.getParameter("colore") != null ? request.getParameter("colore") : "" %>" />
                 </div>
 
-                <div class="filter-field">
-                    <label class="filter-label" for="filterTaglia">Taglia</label>
-                    <input type="text" id="filterTaglia" name="taglia" class="filter-input" placeholder="Es. M, L..." value="<%= request.getParameter("taglia") != null ? request.getParameter("taglia") : "" %>" />
-                </div>
+                
                 
                 <div class="filter-field">
                     <label class="filter-label" for="filterPrezzoMin">Prezzo Minimo (€)</label>
