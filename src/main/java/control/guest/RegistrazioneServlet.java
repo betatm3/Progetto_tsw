@@ -92,7 +92,7 @@ public class RegistrazioneServlet extends HttpServlet {
             nuovoUtente.setRuolo(Ruolo.CLIENTE); 
             nuovoUtente.setIndirizzo(indirizzo.trim());
             nuovoUtente.setDataNascita(dataNascita);
-            nuovoUtente.setTelefono(telefono.trim());
+            nuovoUtente.setTelefono(telefono.replaceAll("\\s+", ""));
             nuovoUtente.setPassword(password); 
             
             boolean isCreato = utenteDAO.doSave(nuovoUtente);

@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     const regexNomeCognome = /^[a-zA-ZàèéìòùÀÈÉÌÒÙ\s']{2,50}$/;
     const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const regexTelefono = /^(\+39)?\s?3\d{2}\s?\d{6,7}$/;
+	const regexTelefono = /^(\+39)?\s?\d{3}\s?\d{3}\s?\d{3,4}$/;
 
     
     function showFieldError(input, message) {
@@ -105,18 +105,43 @@ document.addEventListener("DOMContentLoaded", function() {
         return true;
     }
 
-    function validateTelefono() {
-        const val = telefonoInput.value.trim();
-        if (!val) {
-            showFieldError(telefonoInput, "Il numero di telefono è obbligatorio.");
-            return false;
-        } else if (!regexTelefono.test(val)) {
-            showFieldError(telefonoInput, "Inserisci un numero di cellulare valido (es. 3331234567).");
-            return false;
-        }
-        showFieldError(telefonoInput, null);
-        return true;
-    }
+   	function validateTelefono() {
+	    let val = telefonoInput.value.trim();
+	    
+	    if (!val) {
+	        showFieldError(telefonoInput, "Il numero di telefono è obbligatorio.");
+	        return false;
+	    } 
+
+	    // Formattazione automatica in gruppi (es. 333 123 4567)
+	    let haPrefisso = val.startsWith('+39');
+	    let cifre = val.replace(/\D/g, '');
+
+	    if (haPrefisso && cifre.startsWith('39')) {
+	        cifre = cifre.substring(2);
+	    }
+	    if (cifre.length > 10) {
+	        cifre = cifre.substring(0, 10);
+	    }
+
+	    let formattato = '';
+	    if (haPrefisso) formattato += '+39 ';
+	    if (cifre.length > 0) formattato += cifre.substring(0, 3);
+	    if (cifre.length > 3) formattato += ' ' + cifre.substring(3, 6);
+	    if (cifre.length > 6) formattato += ' ' + cifre.substring(6, 10);
+
+	    // Aggiorna il valore visivo nell'input
+	    telefonoInput.value = formattato;
+
+	    // Controllo finale con la Regex
+	    if (!regexTelefono.test(telefonoInput.value.trim())) {
+	        showFieldError(telefonoInput, "Inserisci un numero di cellulare valido (es. +39 333 123 4567 o 333 123 4567).");
+	        return false;
+	    }
+
+	    showFieldError(telefonoInput, null);
+	    return true;
+	}
 
     function validateDataNascita() {
         const val = dataNascitaInput.value;

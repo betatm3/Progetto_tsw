@@ -65,7 +65,7 @@
                 
                 <div class="form-group">
                     <label for="telefono">Numero di Telefono</label>
-                    <input type="tel" id="telefono" name="telefono" required placeholder="Es. 3331234567" />
+                    <input type="tel" id="telefono" name="telefono" required placeholder="Es. 3331234567" maxlength="16"/>
                 </div>
 
                 <div class="form-group">
