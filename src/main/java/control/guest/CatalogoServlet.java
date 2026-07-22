@@ -161,8 +161,18 @@ public class CatalogoServlet extends HttpServlet {
             e.printStackTrace();
         }
         
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/guest/catalogo.jsp");
-        dispatcher.forward(request, response);
+        boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+
+        if (isAjax) {
+            // Rinvii solo il file con le sole schedine dei prodotti (es. componenti/grigliaProdotti.jsp)
+            request.getRequestDispatcher("/WEB-INF/view/guest/grigliaProdotti.jsp").forward(request, response);
+        } else {
+            // Caricamento normale della pagina intera
+            request.getRequestDispatcher("/WEB-INF/view/guest/catalogo.jsp").forward(request, response);
+        }
+        
+        /*RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/guest/catalogo.jsp");
+        dispatcher.forward(request, response);*/
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
