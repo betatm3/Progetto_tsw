@@ -12,10 +12,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const indirizzoInput = document.getElementById("indirizzo");
 
     
-    const regexNomeCognome = /^[a-zA-ZàèéìòùÀÈÉÌÒÙ\s']{2,50}$/;
+    const regexNomeCognome = /^[A-Za-zÀ-ÿ\s']{2,50}$/;
     const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 	const regexTelefono = /^(\+39)?\s?\d{3}\s?\d{3}\s?\d{3,4}$/;
-
+	const regexPassword = /^(?=\S+$)(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+	    //msg: "La password deve contenere almeno 8 caratteri, una maiuscola, un numero, un carattere speciale e nessun spazio." 
+	
     
     function showFieldError(input, message) {
         let parent = input.parentElement;
@@ -82,14 +84,17 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function validatePassword() {
-        const val = passwordInput.value;
-        if (!val) {
-            showFieldError(passwordInput, "La password è obbligatoria.");
-            return false;
-        }
-        showFieldError(passwordInput, null);
-        return true;
-    }
+	    const val = passwordInput.value;
+	    if (!val) {
+	        showFieldError(passwordInput, "La password è obbligatoria.");
+	        return false;
+	    } else if (!regexPassword.test(val)) {
+	        showFieldError(passwordInput, "La password deve contenere almeno 8 caratteri, una maiuscola, un numero, un carattere speciale e nessun spazio.");
+	        return false;
+	    }
+	    showFieldError(passwordInput, null);
+	    return true;
+	}
 
     function validateConfermaPassword() {
         const pass = passwordInput.value;
