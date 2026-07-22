@@ -50,7 +50,7 @@
                 
                
                 <div class="checkout-card">
-                    <form action="/common/checkout" method="POST">
+                    <form action="${pageContext.request.contextPath}/common/checkout" method="POST">
                         <div class="section-title">
                             <span>📦</span> Indirizzo di Spedizione
                         </div>
