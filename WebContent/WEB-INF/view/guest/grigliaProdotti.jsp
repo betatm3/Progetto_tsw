@@ -56,7 +56,7 @@
                                     if (trimmed.startsWith("data:") || trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
                                         imgSrcCat = trimmed;
                                     } else if (trimmed.startsWith("/") || trimmed.startsWith("images/") || trimmed.startsWith("img/")) {
-                                    	String cleanPath = trimmed.replace("img/prodotti/", "").replace("img/", "").replace("images/", "");
+                                    	String cleanPath = trimmed.replace("images/occhiali/", "").replace("img/", "").replace("images/", "");
                                         if (cleanPath.startsWith("/")) cleanPath = cleanPath.substring(1);
                                         imgSrcCat = request.getContextPath() + "/images/occhiali/" + cleanPath;
                                     } else {
